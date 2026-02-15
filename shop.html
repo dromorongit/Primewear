@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop wholesale fashion products at Prime Wear - Premium clothing and accessories at competitive prices">
+    <title>Shop Wholesale - Prime Wear Wholesale</title>
+    <link rel="icon" href="assets/images/primewearicon.PNG" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .shop-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            padding: 100px 0;
+        }
+        
+        .shop-sidebar {
+            background: #FAFAFA;
+            padding: 30px;
+            border-radius: 15px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .sidebar-section h4 {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        
+        .filter-option input[type="radio"],
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+        
+        .filter-option span {
+            font-size: 0.95rem;
+        }
+        
+        .price-range {
+            margin-top: 15px;
+        }
+        
+        .price-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .price-inputs input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .shop-header {
+            margin-bottom: 40px;
+        }
+        
+        .shop-header h2 {
+            margin-bottom: 10px;
+        }
+        
+        .shop-header p {
+            color: var(--text-light);
+        }
+        
+        .products-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .product-count {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        
+        .sort-select {
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .products-grid-wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: #FAFAFA;
+            border-radius: 15px;
+        }
+        
+        @media (max-width: 1200px) {
+            .products-grid-wrapper {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .shop-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .shop-sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Prime Wear</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                <span class="logo-text">Prime Wear</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="shop.html" class="active">Shop Wholesale</a></li>
+                <li><a href="retail.html">Shop Retail</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="mini-cart">
+                <div class="mini-cart-header">
+                    <h4>Shopping Cart</h4>
+                    <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
+                </div>
+                <div class="mini-cart-items">
+                    <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
+                </div>
+                <div class="mini-cart-footer"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Shop Wholesale</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span>Shop Wholesale</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section class="shop-section">
+        <div class="container">
+            <div class="shop-container">
+                <!-- Sidebar Filters -->
+                <aside class="shop-sidebar">
+                    <div class="sidebar-section">
+                        <h4><i class="fas fa-filter"></i> Filters</h4>
+                        
+                        <div class="filter-option">
+                            <input type="radio" name="category" id="cat-all" value="all" checked>
+                            <label for="cat-all">All Products</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" name="category" id="cat-clothings" value="clothings">
+                            <label for="cat-clothings">Clothings</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" name="category" id="cat-accessories" value="accessories">
+                            <label for="cat-accessories">Accessories</label>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h4><i class="fas fa-tags"></i> Product Type</h4>
+                        
+                        <div class="filter-option">
+                            <input type="checkbox" id="type-wholesale" value="wholesale" checked disabled>
+                            <label for="type-wholesale">Wholesale (Active)</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="type-retail" value="retail">
+                            <label for="type-retail"><a href="retail.html">Retail Products</a></label>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h4><i class="fas fa-dollar-sign"></i> Price Range</h4>
+                        <div class="price-inputs">
+                            <input type="number" id="min-price" placeholder="Min" min="0">
+                            <span>-</span>
+                            <input type="number" id="max-price" placeholder="Max" min="0">
+                        </div>
+                        <button class="btn btn-primary btn-small" style="width: 100%; margin-top: 15px;" onclick="applyFilters()">
+                            Apply Price
+                        </button>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h4><i class="fas fa-star"></i> Availability</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="in-stock" checked>
+                            <label for="in-stock">In Stock Only</label>
+                        </div>
+                    </div>
+                </aside>
+                
+                <!-- Products Grid -->
+                <div class="shop-main">
+                    <div class="shop-header">
+                        <h2>Wholesale Products</h2>
+                        <p>Quality fashion products at competitive wholesale prices</p>
+                    </div>
+                    
+                    <div class="products-toolbar">
+                        <span class="product-count"><span id="product-count">0</span> products found</span>
+                        <select class="sort-select" id="sort-select" onchange="sortProducts()">
+                            <option value="default">Sort by: Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name-asc">Name: A to Z</option>
+                            <option value="name-desc">Name: Z to A</option>
+                        </select>
+                    </div>
+                    
+                    <div class="products-grid-wrapper" id="products-grid">
+                        <!-- Products will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                        <span class="logo-text">Prime Wear</span>
+                    </a>
+                    <p>Your trusted partner for premium wholesale and retail fashion in Accra, Ghana.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@darkieswholesale?_t=8pRvmC9BaTt&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.instagram.com/darkieswholesale?igsh=MTk0YmN6ZnAyZGo4cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="shop.html">Shop Wholesale</a></li>
+                        <li><a href="retail.html">Shop Retail</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html?category=clothings">Clothings</a></li>
+                        <li><a href="shop.html?category=accessories">Accessories</a></li>
+                        <li><a href="retail.html">Premium Collection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Prime Wear Wholesale. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Files -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        let filteredProducts = [];
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get initial filter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category') || 'all';
+            
+            // Set category filter
+            document.getElementById('cat-all').checked = category === 'all';
+            document.getElementById('cat-clothings').checked = category === 'clothings';
+            document.getElementById('cat-accessories').checked = category === 'accessories';
+            
+            // Initial render
+            applyFilters();
+            
+            // Add event listeners to filters
+            document.querySelectorAll('input[name="category"]').forEach(input => {
+                input.addEventListener('change', applyFilters);
+            });
+            
+            document.getElementById('in-stock').addEventListener('change', applyFilters);
+        });
+        
+        function applyFilters() {
+            const category = document.querySelector('input[name="category"]:checked').value;
+            const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+            const inStockOnly = document.getElementById('in-stock').checked;
+            
+            // Get wholesale products
+            filteredProducts = getProductsByType('wholesale');
+            
+            // Filter by category
+            if (category !== 'all') {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.category.toLowerCase() === category.toLowerCase()
+                );
+            }
+            
+            // Filter by price
+            filteredProducts = filteredProducts.filter(p => {
+                const price = Cart.getItemPrice(p);
+                return price >= minPrice && price <= maxPrice;
+            });
+            
+            // Filter by stock
+            if (inStockOnly) {
+                filteredProducts = filteredProducts.filter(p => p.stock > 0);
+            }
+            
+            // Update product count
+            document.getElementById('product-count').textContent = filteredProducts.length;
+            
+            // Render products
+            renderProducts();
+        }
+        
+        function sortProducts() {
+            const sortBy = document.getElementById('sort-select').value;
+            filteredProducts = sortProductsFn(filteredProducts, sortBy);
+            renderProducts();
+        }
+        
+        function renderProducts() {
+            const container = document.getElementById('products-grid');
+            
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No products found</h3>
+                        <p>Try adjusting your filters</p>
+                        <button class="btn btn-primary" onclick="resetFilters()" style="margin-top: 20px;">Reset Filters</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+        }
+        
+        function resetFilters() {
+            document.getElementById('cat-all').checked = true;
+            document.getElementById('min-price').value = '';
+            document.getElementById('max-price').value = '';
+            document.getElementById('in-stock').checked = true;
+            document.getElementById('sort-select').value = 'default';
+            applyFilters();
+        }
+        
+        // Override sortProducts function to avoid conflict
+        function sortProductsFn(products, sortBy) {
+            return sortProducts(products, sortBy);
+        }
+    </script>
+</body>
+</html>

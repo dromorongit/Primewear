@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View and manage your shopping cart at Prime Wear Wholesale">
+    <title>Shopping Cart - Prime Wear Wholesale</title>
+    <link rel="icon" href="assets/images/primewearicon.PNG" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Prime Wear</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                <span class="logo-text">Prime Wear</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="shop.html">Shop Wholesale</a></li>
+                <li><a href="retail.html">Shop Retail</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="active">Cart</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="mini-cart">
+                <div class="mini-cart-header">
+                    <h4>Shopping Cart</h4>
+                    <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
+                </div>
+                <div class="mini-cart-items">
+                    <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
+                </div>
+                <div class="mini-cart-footer"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span>Cart</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section class="cart-page">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 400px; gap: 40px;">
+                <!-- Cart Table -->
+                <div class="cart-table-wrapper">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Availability</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-table-body">
+                            <!-- Cart items will be rendered here -->
+                        </tbody>
+                    </table>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap; gap: 20px;">
+                        <a href="shop.html" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i> Continue Shopping
+                        </a>
+                        <button class="btn btn-secondary" onclick="Cart.clear()">
+                            <i class="fas fa-trash"></i> Clear Cart
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Cart Totals -->
+                <div class="cart-total">
+                    <h3>Order Summary</h3>
+                    <div class="cart-total-row">
+                        <span>Subtotal</span>
+                        <span class="cart-subtotal">GH₵0.00</span>
+                    </div>
+                    <div class="cart-total-row">
+                        <span>Shipping</span>
+                        <span class="cart-shipping"><span style="color: #27AE60;">Calculated at checkout</span></span>
+                    </div>
+                    <div class="cart-total-row">
+                        <span>Estimated Total</span>
+                        <span class="cart-total-amount">GH₵0.00</span>
+                    </div>
+                    
+                    <button class="btn btn-primary checkout-btn" id="checkout-btn">
+                        <i class="fab fa-whatsapp"></i> Proceed to Checkout
+                    </button>
+                    
+                    <div style="margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border-color);">
+                        <h4 style="margin-bottom: 15px; font-size: 1rem;">Secure Checkout</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">
+                            Complete your order via WhatsApp. Our team will confirm your order and provide payment details.
+                        </p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">
+                                <i class="fas fa-lock"></i> Secure
+                            </span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">
+                                <i class="fas fa-phone"></i> WhatsApp
+                            </span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">
+                                <i class="fas fa-shipping-fast"></i> Delivery
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                        <span class="logo-text">Prime Wear</span>
+                    </a>
+                    <p>Your trusted partner for premium wholesale and retail fashion in Accra, Ghana.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@darkieswholesale?_t=8pRvmC9BaTt&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.instagram.com/darkieswholesale?igsh=MTk0YmN6ZnAyZGo4cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="shop.html">Shop Wholesale</a></li>
+                        <li><a href="retail.html">Shop Retail</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html?category=clothings">Clothings</a></li>
+                        <li><a href="shop.html?category=accessories">Accessories</a></li>
+                        <li><a href="retail.html">Premium Collection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Prime Wear Wholesale. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Files -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof CartPage !== 'undefined') {
+                CartPage.init();
+            }
+        });
+    </script>
+</body>
+</html>

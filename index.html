@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Prime Wear Wholesale - Premium Wholesale & Retail Fashion Supply in Dome, Accra. Quality clothing and accessories at competitive prices.">
+    <meta name="keywords" content="wholesale clothing, retail fashion, Ghana, Accra, Dome, Prime Wear, bulk clothing, fashion accessories">
+    <title>Prime Wear Wholesale - Premium Fashion Supply in Dome, Accra</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/images/primewearicon.PNG" type="image/png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Quick View Modal Styles */
+        .quick-view-options {
+            margin-bottom: 15px;
+        }
+        .quick-view-options label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .quick-view-options select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .quick-view-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .quick-view-description {
+            color: var(--text-light);
+            margin: 15px 0;
+            line-height: 1.7;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Prime Wear</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                <span class="logo-text">Prime Wear</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="shop.html">Shop Wholesale</a></li>
+                <li><a href="retail.html">Shop Retail</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+            
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <!-- Mini Cart Dropdown -->
+            <div class="mini-cart">
+                <div class="mini-cart-header">
+                    <h4>Shopping Cart</h4>
+                    <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
+                </div>
+                <div class="mini-cart-items">
+                    <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
+                </div>
+                <div class="mini-cart-footer"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">Premium Quality Fashion</span>
+                    <h1>Premium Wholesale & <span>Retail Fashion</span> Supply</h1>
+                    <p>Your trusted partner for high-quality clothing and accessories. Located in Dome, Accra, we provide the best wholesale and retail fashion solutions at competitive prices.</p>
+                    <div class="hero-buttons">
+                        <a href="shop.html" class="btn btn-primary">
+                            <i class="fas fa-box"></i> Shop Wholesale
+                        </a>
+                        <a href="retail.html" class="btn btn-secondary">
+                            <i class="fas fa-shopping-bag"></i> Shop Retail
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Products</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1000+</div>
+                            <div class="stat-label">Happy Customers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800" alt="Prime Wear Fashion Store" class="hero-image-main">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Shop by Category</h2>
+                <p>Explore our wide range of fashion products organized by category</p>
+            </div>
+            <div class="categories-grid">
+                <a href="shop.html?category=clothings" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=600" alt="Clothings">
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3>Clothings</h3>
+                        <p>T-Shirts, Dresses, Suits & More</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=accessories" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600" alt="Accessories">
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3>Accessories</h3>
+                        <p>Watches, Bags, Belts & More</p>
+                    </div>
+                </a>
+                <a href="retail.html" class="category-card">
+                    <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600" alt="Premium Collection">
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3>Premium Collection</h3>
+                        <p>Exclusive Designer Items</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="products">
+        <div class="container">
+            <div class="products-header">
+                <div class="section-header" style="text-align: left; margin-bottom: 0;">
+                    <h2>Featured Products</h2>
+                    <p>Our most popular wholesale and retail products</p>
+                </div>
+                <div class="product-tabs">
+                    <button class="product-tab active" onclick="filterAndRender('all')">All Products</button>
+                    <button class="product-tab" onclick="filterAndRender('wholesale')">Wholesale</button>
+                    <button class="product-tab" onclick="filterAndRender('retail')">Retail</button>
+                </div>
+            </div>
+            <div class="products-grid" id="featured-products">
+                <!-- Products will be rendered here -->
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="shop.html" class="btn btn-outline">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Prime Wear</h2>
+                <p>What makes us the preferred choice for fashion retailers</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h4>Fast Delivery</h4>
+                    <p>Quick and reliable delivery across Accra and Ghana</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h4>Wholesale Prices</h4>
+                    <p>Competitive wholesale pricing for bulk orders</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h4>Premium Quality</h4>
+                    <p>High-quality products that sell themselves</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>24/7 Support</h4>
+                    <p>Dedicated customer support via WhatsApp</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Real feedback from our satisfied wholesale and retail customers</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Prime Wear has been our go-to supplier for 2 years now. The quality is consistently excellent and their wholesale prices are unbeatable in Accra."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" alt="Customer" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h5>Kwame Asante</h5>
+                            <p>Boutique Owner, East Legon</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text">"I love shopping at Prime Wear for my retail needs. The staff is helpful and the product selection is always on trend. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Customer" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h5>Adaeze Okonkwo</h5>
+                            <p>Loyal Customer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The wholesale experience at Prime Wear is seamless. Easy ordering, great bulk discounts, and timely deliveries. A reliable partner for my business."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="Customer" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <h5>Emmanuel Osei</h5>
+                            <p>Retailer, Tema</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start Shopping?</h2>
+            <p>Browse our extensive collection of wholesale and retail fashion products. Quality guaranteed, competitive prices, excellent service.</p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="shop.html" class="btn btn-primary">
+                    <i class="fas fa-box"></i> Shop Wholesale
+                </a>
+                <a href="retail.html" class="btn btn-outline" style="border-color: white; color: white;">
+                    <i class="fas fa-shopping-bag"></i> Shop Retail
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                        <span class="logo-text">Prime Wear</span>
+                    </a>
+                    <p>Your trusted partner for premium wholesale and retail fashion in Accra, Ghana. Quality clothing and accessories at competitive prices.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@darkieswholesale?_t=8pRvmC9BaTt&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.instagram.com/darkieswholesale?igsh=MTk0YmN6ZnAyZGo4cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="shop.html">Shop Wholesale</a></li>
+                        <li><a href="retail.html">Shop Retail</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html?category=clothings">Clothings</a></li>
+                        <li><a href="shop.html?category=accessories">Accessories</a></li>
+                        <li><a href="retail.html">Premium Collection</a></li>
+                        <li><a href="shop.html">New Arrivals</a></li>
+                        <li><a href="shop.html">Best Sellers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Prime Wear Wholesale. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Files -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Render featured products on homepage
+        document.addEventListener('DOMContentLoaded', () => {
+            const featuredProducts = getProductsByType('wholesale').slice(0, 8);
+            const container = document.getElementById('featured-products');
+            
+            if (container && featuredProducts.length > 0) {
+                container.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+            }
+        });
+
+        // Filter and render products
+        function filterAndRender(type) {
+            const container = document.getElementById('featured-products');
+            const tabs = document.querySelectorAll('.product-tab');
+            
+            // Update active tab
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter and render
+            let products;
+            if (type === 'all') {
+                products = getAllProducts().slice(0, 8);
+            } else {
+                products = getProductsByType(type).slice(0, 8);
+            }
+            
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete your order at Prime Wear Wholesale - Secure checkout via WhatsApp">
+    <title>Checkout - Prime Wear Wholesale</title>
+    <link rel="icon" href="assets/images/primewearicon.PNG" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Prime Wear</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                <span class="logo-text">Prime Wear</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="shop.html">Shop Wholesale</a></li>
+                <li><a href="retail.html">Shop Retail</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="mini-cart">
+                <div class="mini-cart-header">
+                    <h4>Shopping Cart</h4>
+                    <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
+                </div>
+                <div class="mini-cart-items">
+                    <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
+                </div>
+                <div class="mini-cart-footer"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Checkout</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <a href="cart.html">Cart</a>
+                <span>/</span>
+                <span>Checkout</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Section -->
+    <section class="checkout-page">
+        <div class="container">
+            <div class="checkout-grid">
+                <!-- Checkout Form -->
+                <div class="checkout-form-wrapper">
+                    <form id="checkout-form">
+                        <div class="checkout-form">
+                            <h3><i class="fas fa-user"></i> Customer Information</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Full Name *</label>
+                                    <input type="text" id="name" name="name" required placeholder="Your full name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="your@email.com">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" required placeholder="+233 XX XXX XXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label for="whatsapp">WhatsApp Number *</label>
+                                    <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+233 XX XXX XXXX">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checkout-form" style="margin-top: 30px;">
+                            <h3><i class="fas fa-shipping-fast"></i> Delivery Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="address">Delivery Address *</label>
+                                <textarea id="address" name="address" required placeholder="Enter your complete delivery address including landmarks..."></textarea>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" name="city" placeholder="Accra">
+                                </div>
+                                <div class="form-group">
+                                    <label for="region">Region</label>
+                                    <select id="region" name="region">
+                                        <option value="greater-accra">Greater Accra</option>
+                                        <option value="central">Central</option>
+                                        <option value="ashanti">Ashanti</option>
+                                        <option value="eastern">Eastern</option>
+                                        <option value="western">Western</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checkout-form" style="margin-top: 30px;">
+                            <h3><i class="fas fa-clipboard-list"></i> Order Notes</h3>
+                            
+                            <div class="form-group">
+                                <label for="notes">Additional Notes</label>
+                                <textarea id="notes" name="notes" placeholder="Any special instructions for your order..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3><i class="fas fa-shopping-bag"></i> Your Order</h3>
+                    
+                    <div class="order-items">
+                        <!-- Order items will be rendered here -->
+                    </div>
+                    
+                    <div class="order-totals">
+                        <div class="order-total-row">
+                            <span>Subtotal</span>
+                            <span class="order-subtotal">GH₵0.00</span>
+                        </div>
+                        <div class="order-total-row">
+                            <span>Shipping</span>
+                            <span class="order-shipping">Calculated after order</span>
+                        </div>
+                        <div class="order-total-row final">
+                            <span>Total</span>
+                            <span class="order-total">GH₵0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary checkout-btn" onclick="Checkout.processCheckout()" style="margin-top: 25px;">
+                        <i class="fab fa-whatsapp"></i> Complete Order via WhatsApp
+                    </button>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: #F8F6EF; border-radius: 10px;">
+                        <h4 style="margin-bottom: 10px; font-size: 0.95rem;"><i class="fas fa-info-circle"></i> How Checkout Works</h4>
+                        <ol style="padding-left: 20px; font-size: 0.85rem; color: var(--text-light); line-height: 1.8;">
+                            <li>Fill in your delivery information</li>
+                            <li>Click "Complete Order via WhatsApp"</li>
+                            <li>We'll receive your order details</li>
+                            <li>We'll confirm availability and total</li>
+                            <li>Complete payment and arrange delivery</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="margin-top: 15px; text-align: center;">
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="fas fa-lock"></i> Secure checkout powered by WhatsApp
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                        <span class="logo-text">Prime Wear</span>
+                    </a>
+                    <p>Your trusted partner for premium wholesale and retail fashion in Accra, Ghana.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@darkieswholesale?_t=8pRvmC9BaTt&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.instagram.com/darkieswholesale?igsh=MTk0YmN6ZnAyZGo4cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="shop.html">Shop Wholesale</a></li>
+                        <li><a href="retail.html">Shop Retail</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html?category=clothings">Clothings</a></li>
+                        <li><a href="shop.html?category=accessories">Accessories</a></li>
+                        <li><a href="retail.html">Premium Collection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Prime Wear Wholesale. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Files -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Checkout.init();
+        });
+    </script>
+</body>
+</html>

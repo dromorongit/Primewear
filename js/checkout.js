@@ -1,0 +1,400 @@
+// ================================================
+// Prime Wear Wholesale - Checkout Functionality
+// ================================================
+
+const Checkout = {
+    // WhatsApp number for orders
+    whatsappNumber: 'https://wa.me/message/A6Y7H3ZVDOFJO1',
+    
+    // Form validation rules
+    validators: {
+        name: {
+            validate: (value) => value.trim().length >= 2,
+            message: 'Please enter your full name'
+        },
+        phone: {
+            validate: (value) => /^[\d\s\-\+]{10,}$/.test(value),
+            message: 'Please enter a valid phone number'
+        },
+        email: {
+            validate: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            message: 'Please enter a valid email address'
+        },
+        address: {
+            validate: (value) => value.trim().length >= 10,
+            message: 'Please enter your complete delivery address'
+        }
+    },
+    
+    // Initialize checkout page
+    init() {
+        if (this.isCheckoutPage()) {
+            this.initForm();
+            this.initOrderSummary();
+        }
+    },
+    
+    // Check if current page is checkout
+    isCheckoutPage() {
+        return window.location.pathname.includes('checkout.html');
+    },
+    
+    // Initialize form handling
+    initForm() {
+        const form = document.getElementById('checkout-form');
+        if (!form) return;
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (this.validateForm()) {
+                this.processCheckout();
+            }
+        });
+        
+        // Real-time validation
+        const inputs = form.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+                this.validateField(input);
+            });
+            input.addEventListener('input', () => {
+                this.clearFieldError(input);
+            });
+        });
+    },
+    
+    // Validate entire form
+    validateForm() {
+        const form = document.getElementById('checkout-form');
+        if (!form) return false;
+        
+        const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+            if (!this.validateField(input)) {
+                isValid = false;
+            }
+        });
+        
+        if (!isValid) {
+            this.showNotification('Please fill in all required fields correctly', 'error');
+        }
+        
+        return isValid;
+    },
+    
+    // Validate single field
+    validateField(input) {
+        const fieldName = input.name;
+        const validator = this.validators[fieldName];
+        
+        if (!validator) return true;
+        
+        const value = input.value;
+        const isValid = validator.validate(value);
+        
+        if (!isValid) {
+            this.showFieldError(input, validator.message);
+        } else {
+            this.clearFieldError(input);
+        }
+        
+        return isValid;
+    },
+    
+    // Show field error
+    showFieldError(input, message) {
+        const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
+        
+        formGroup.classList.add('error');
+        
+        let errorEl = formGroup.querySelector('.error-message');
+        if (!errorEl) {
+            errorEl = document.createElement('span');
+            errorEl.className = 'error-message';
+            errorEl.style.cssText = 'color: #E74C3C; font-size: 0.85rem; margin-top: 5px; display: block;';
+            formGroup.appendChild(errorEl);
+        }
+        
+        errorEl.textContent = message;
+        input.style.borderColor = '#E74C3C';
+    },
+    
+    // Clear field error
+    clearFieldError(input) {
+        const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
+        
+        formGroup.classList.remove('error');
+        
+        const errorEl = formGroup.querySelector('.error-message');
+        if (errorEl) {
+            errorEl.remove();
+        }
+        
+        input.style.borderColor = '';
+    },
+    
+    // Initialize order summary
+    initOrderSummary() {
+        this.updateOrderSummary();
+    },
+    
+    // Update order summary display
+    updateOrderSummary() {
+        const orderItems = document.querySelector('.order-items');
+        const subtotalEl = document.querySelector('.order-subtotal');
+        const shippingEl = document.querySelector('.order-shipping');
+        const totalEl = document.querySelector('.order-total');
+        
+        if (!orderItems) return;
+        
+        // Render order items
+        if (Cart.items.length === 0) {
+            orderItems.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-muted);">Your cart is empty</p>';
+            return;
+        }
+        
+        orderItems.innerHTML = Cart.items.map((item, index) => `
+            <div class="order-item">
+                <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/images/placeholder.jpg'">
+                <div class="order-item-info">
+                    <div class="order-item-name">${item.name}</div>
+                    <div class="order-item-quantity">Qty: ${item.quantity}${item.size ? ` | ${item.size}` : ''}${item.color ? ` | ${item.color}` : ''}</div>
+                </div>
+                <div class="order-item-price">GH₵${(Cart.getItemPrice(item) * item.quantity).toFixed(2)}</div>
+            </div>
+        `).join('');
+        
+        // Update totals
+        if (subtotalEl) subtotalEl.textContent = `GH₵${Cart.getSubtotal().toFixed(2)}`;
+        if (shippingEl) {
+            const shipping = Cart.getShipping();
+            shippingEl.textContent = shipping === 0 ? 'FREE' : `GH₵${shipping.toFixed(2)}`;
+        }
+        if (totalEl) totalEl.textContent = `GH₵${Cart.getTotal().toFixed(2)}`;
+    },
+    
+    // Process checkout
+    processCheckout() {
+        const form = document.getElementById('checkout-form');
+        const customerInfo = {
+            name: form.querySelector('[name="name"]').value,
+            phone: form.querySelector('[name="phone"]').value,
+            email: form.querySelector('[name="email"]').value,
+            address: form.querySelector('[name="address"]').value,
+            notes: form.querySelector('[name="notes"]').value
+        };
+        
+        // Generate WhatsApp message
+        const message = Cart.generateWhatsappMessage(customerInfo);
+        const whatsappUrl = `${this.whatsappNumber}&text=${message}`;
+        
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        // Clear cart after successful order
+        Cart.clear();
+        
+        // Show success message
+        this.showNotification('Order sent successfully! Check WhatsApp to complete your order.');
+        
+        // Redirect to home after a delay
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 3000);
+    },
+    
+    // Show notification
+    showNotification(message, type = 'success') {
+        const existing = document.querySelector('.checkout-notification');
+        if (existing) existing.remove();
+        
+        const notification = document.createElement('div');
+        notification.className = `checkout-notification ${type}`;
+        notification.innerHTML = `
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()">&times;</button>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'success' ? '#27AE60' : '#E74C3C'};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+};
+
+// Cart page specific functions
+const CartPage = {
+    // Initialize cart page
+    init() {
+        if (!this.isCartPage()) return;
+        
+        this.renderCartTable();
+        this.initQuantityHandlers();
+        this.initRemoveHandlers();
+        this.initCheckoutButton();
+    },
+    
+    // Check if current page is cart
+    isCartPage() {
+        return window.location.pathname.includes('cart.html');
+    },
+    
+    // Render cart table
+    renderCartTable() {
+        const cartTableBody = document.querySelector('.cart-table tbody');
+        if (!cartTableBody) return;
+        
+        if (Cart.items.length === 0) {
+            cartTableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 60px 20px;">
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">Your cart is empty</p>
+                        <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+                    </td>
+                </tr>
+            `;
+            this.updateCartTotals();
+            return;
+        }
+        
+        cartTableBody.innerHTML = Cart.items.map((item, index) => `
+            <tr>
+                <td>
+                    <div class="cart-product">
+                        <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/images/placeholder.jpg'">
+                        <div class="cart-product-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.type === 'wholesale' ? 'Wholesale' : 'Retail'}${item.size ? ` | Size: ${item.size}` : ''}${item.color ? ` | ${item.color}` : ''}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>${item.stock > 0 ? '<span style="color: #27AE60;">In Stock</span>' : '<span style="color: #E74C3C;">Out of Stock</span>'}</td>
+                <td>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="CartPage.updateQuantity(${index}, -1)">-</button>
+                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="${item.stock}" onchange="CartPage.changeQuantity(${index}, this.value)">
+                        <button class="quantity-btn" onclick="CartPage.updateQuantity(${index}, 1)">+</button>
+                    </div>
+                </td>
+                <td>GH₵${Cart.getItemPrice(item).toFixed(2)}</td>
+                <td><strong>GH₵${(Cart.getItemPrice(item) * item.quantity).toFixed(2)}</strong></td>
+                <td>
+                    <button class="cart-remove-btn" onclick="Cart.removeItem(${index})" style="color: #E74C3C; font-size: 1.2rem; background: none; border: none; cursor: pointer;">
+                        &times;
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        
+        this.updateCartTotals();
+    },
+    
+    // Update item quantity
+    updateQuantity(index, change) {
+        const newQuantity = Cart.items[index].quantity + change;
+        if (newQuantity < 1) {
+            if (confirm('Remove this item from cart?')) {
+                Cart.removeItem(index);
+            }
+        } else if (newQuantity <= Cart.items[index].stock) {
+            Cart.updateQuantity(index, newQuantity);
+        } else {
+            Cart.showNotification(`Only ${Cart.items[index].stock} items available`, 'error');
+        }
+        this.renderCartTable();
+    },
+    
+    // Change quantity via input
+    changeQuantity(index, value) {
+        const quantity = parseInt(value);
+        if (quantity < 1) {
+            Cart.removeItem(index);
+        } else if (quantity > Cart.items[index].stock) {
+            Cart.showNotification(`Only ${Cart.items[index].stock} items available`, 'error');
+            Cart.updateQuantity(index, Cart.items[index].stock);
+        } else {
+            Cart.updateQuantity(index, quantity);
+        }
+        this.renderCartTable();
+    },
+    
+    // Initialize quantity input handlers
+    initQuantityHandlers() {
+        const inputs = document.querySelectorAll('.quantity-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('change', (e) => {
+                this.changeQuantity(index, e.target.value);
+            });
+        });
+    },
+    
+    // Initialize remove button handlers
+    initRemoveHandlers() {
+        // Handlers are added via inline onclick
+    },
+    
+    // Update cart totals
+    updateCartTotals() {
+        const subtotalEl = document.querySelector('.cart-subtotal');
+        const shippingEl = document.querySelector('.cart-shipping');
+        const totalEl = document.querySelector('.cart-total-amount');
+        
+        if (subtotalEl) subtotalEl.textContent = `GH₵${Cart.getSubtotal().toFixed(2)}`;
+        
+        if (shippingEl) {
+            const shipping = Cart.getShipping();
+            shippingEl.innerHTML = shipping === 0 ? '<span style="color: #27AE60;">FREE</span>' : `GH₵${shipping.toFixed(2)}`;
+        }
+        
+        if (totalEl) totalEl.textContent = `GH₵${Cart.getTotal().toFixed(2)}`;
+    },
+    
+    // Initialize checkout button
+    initCheckoutButton() {
+        const checkoutBtn = document.getElementById('checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (Cart.items.length === 0) {
+                    Cart.showNotification('Your cart is empty', 'error');
+                    return;
+                }
+                window.location.href = 'checkout.html';
+            });
+        }
+    }
+};
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    Cart.init();
+    Checkout.init();
+    CartPage.init();
+});
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { Checkout, CartPage };
+}

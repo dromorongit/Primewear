@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop premium retail fashion at Prime Wear - Exclusive designer items at great prices">
+    <title>Shop Retail - Prime Wear Wholesale</title>
+    <link rel="icon" href="assets/images/primewearicon.PNG" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .retail-hero {
+            background: linear-gradient(135deg, #FDFCF8 0%, #F8F6EF 100%);
+            padding: 80px 0 100px;
+            text-align: center;
+        }
+        
+        .retail-hero h1 {
+            margin-bottom: 15px;
+        }
+        
+        .retail-hero p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .retail-badge {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
+        .products-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .product-count {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        
+        .sort-select {
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Prime Wear</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                <span class="logo-text">Prime Wear</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="shop.html">Shop Wholesale</a></li>
+                <li><a href="retail.html" class="active">Shop Retail</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="mini-cart">
+                <div class="mini-cart-header">
+                    <h4>Shopping Cart</h4>
+                    <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
+                </div>
+                <div class="mini-cart-items">
+                    <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
+                </div>
+                <div class="mini-cart-footer"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Retail Hero -->
+    <section class="retail-hero">
+        <div class="container">
+            <span class="retail-badge"><i class="fas fa-crown"></i> Premium Collection</span>
+            <h1>Shop Retail</h1>
+            <p>Discover our exclusive collection of premium fashion items. Designer pieces, luxury accessories, and trendy styles at competitive retail prices.</p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section style="padding: 80px 0;">
+        <div class="container">
+            <div class="products-header" style="margin-bottom: 40px;">
+                <div class="section-header" style="text-align: left; margin-bottom: 0;">
+                    <h2>Premium Collection</h2>
+                    <p>Exclusive retail products at great prices</p>
+                </div>
+                <div class="product-tabs">
+                    <button class="product-tab active" onclick="filterRetail('all')">All</button>
+                    <button class="product-tab" onclick="filterRetail('clothings')">Clothings</button>
+                    <button class="product-tab" onclick="filterRetail('accessories')">Accessories</button>
+                </div>
+            </div>
+            
+            <div class="products-toolbar">
+                <span class="product-count"><span id="product-count">0</span> products found</span>
+                <select class="sort-select" id="sort-select" onchange="sortRetailProducts()">
+                    <option value="default">Sort by: Default</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name-asc">Name: A to Z</option>
+                    <option value="name-desc">Name: Z to A</option>
+                </select>
+            </div>
+            
+            <div class="products-grid" id="retail-products">
+                <!-- Products will be rendered here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Retail Benefits -->
+    <section style="padding: 80px 0; background: #FAFAFA;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Shop Retail with Us?</h2>
+                <p>Benefits of shopping at Prime Wear</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h4>Premium Quality</h4>
+                    <p>All retail products are carefully selected for quality and style</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h4>Competitive Prices</h4>
+                    <p>Great value for premium fashion items</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h4>Fast Delivery</h4>
+                    <p>Quick delivery across Accra and Ghana</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <h4>Easy Returns</h4>
+                    <p>Straightforward return policy for customer satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                        <span class="logo-text">Prime Wear</span>
+                    </a>
+                    <p>Your trusted partner for premium wholesale and retail fashion in Accra, Ghana.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@darkieswholesale?_t=8pRvmC9BaTt&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.instagram.com/darkieswholesale?igsh=MTk0YmN6ZnAyZGo4cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="shop.html">Shop Wholesale</a></li>
+                        <li><a href="retail.html">Shop Retail</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html?category=clothings">Clothings</a></li>
+                        <li><a href="shop.html?category=accessories">Accessories</a></li>
+                        <li><a href="retail.html">Premium Collection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Prime Wear Wholesale. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Files -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        let retailProducts = [];
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all retail products
+            retailProducts = getProductsByType('retail');
+            document.getElementById('product-count').textContent = retailProducts.length;
+            renderRetailProducts(retailProducts);
+        });
+        
+        function filterRetail(category) {
+            const tabs = document.querySelectorAll('.product-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (category === 'all') {
+                retailProducts = getProductsByType('retail');
+            } else {
+                retailProducts = getProductsByType('retail').filter(p => 
+                    p.category.toLowerCase() === category.toLowerCase()
+                );
+            }
+            
+            document.getElementById('product-count').textContent = retailProducts.length;
+            renderRetailProducts(retailProducts);
+        }
+        
+        function sortRetailProducts() {
+            const sortBy = document.getElementById('sort-select').value;
+            retailProducts = sortProducts(retailProducts, sortBy);
+            renderRetailProducts(retailProducts);
+        }
+        
+        function renderRetailProducts(products) {
+            const container = document.getElementById('retail-products');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <h3>No products found</h3>
+                        <p>Check back soon for new arrivals</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+    </script>
+</body>
+</html>
