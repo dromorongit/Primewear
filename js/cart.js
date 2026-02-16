@@ -179,6 +179,9 @@ const Cart = {
         if (miniCart) {
             miniCart.classList.add('active');
             this.updateMiniCart();
+            
+            // Create overlay for mobile
+            this.createCartOverlay();
         }
     },
     
@@ -188,6 +191,9 @@ const Cart = {
         if (miniCart) {
             miniCart.classList.remove('active');
         }
+        
+        // Remove overlay
+        this.removeCartOverlay();
     },
     
     // Toggle mini cart dropdown
@@ -200,6 +206,31 @@ const Cart = {
                 this.showMiniCart();
             }
         }
+    },
+    
+    // Create cart overlay for mobile
+    createCartOverlay() {
+        // Remove existing overlay first
+        this.removeCartOverlay();
+        
+        // Check if we're on mobile
+        if (window.innerWidth <= 768) {
+            const overlay = document.createElement('div');
+            overlay.className = 'cart-overlay active';
+            overlay.id = 'cart-overlay';
+            overlay.addEventListener('click', () => this.hideMiniCart());
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+        }
+    },
+    
+    // Remove cart overlay
+    removeCartOverlay() {
+        const overlay = document.getElementById('cart-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+        document.body.style.overflow = '';
     },
     
     // Clear entire cart

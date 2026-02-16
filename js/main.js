@@ -143,10 +143,27 @@ function initMobileMenu() {
     
     if (!mobileMenuBtn || !navLinks) return;
     
+    // Create navigation overlay if it doesn't exist
+    let navOverlay = document.querySelector('.nav-overlay');
+    if (!navOverlay) {
+        navOverlay = document.createElement('div');
+        navOverlay.className = 'nav-overlay';
+        document.body.appendChild(navOverlay);
+    }
+    
     mobileMenuBtn.addEventListener('click', () => {
         navLinks.classList.toggle('active');
         mobileMenuBtn.classList.toggle('active');
+        navOverlay.classList.toggle('active');
         body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+    });
+    
+    // Close menu when clicking on overlay
+    navOverlay.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        navOverlay.classList.remove('active');
+        body.style.overflow = '';
     });
     
     // Close menu when clicking on a link
@@ -154,15 +171,27 @@ function initMobileMenu() {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
             mobileMenuBtn.classList.remove('active');
+            navOverlay.classList.remove('active');
             body.style.overflow = '';
         });
     });
     
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+    // Close menu when pressing escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
             navLinks.classList.remove('active');
             mobileMenuBtn.classList.remove('active');
+            navOverlay.classList.remove('active');
+            body.style.overflow = '';
+        }
+    });
+    
+    // Handle window resize - close menu when switching to desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            navOverlay.classList.remove('active');
             body.style.overflow = '';
         }
     });
