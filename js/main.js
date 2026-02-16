@@ -151,6 +151,24 @@ function initMobileMenu() {
         document.body.appendChild(navOverlay);
     }
     
+    // Add close button to nav links if not exists
+    let closeBtn = navLinks.querySelector('.mobile-menu-close');
+    if (!closeBtn) {
+        closeBtn = document.createElement('button');
+        closeBtn.className = 'mobile-menu-close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.setAttribute('aria-label', 'Close menu');
+        navLinks.insertBefore(closeBtn, navLinks.firstChild);
+    }
+    
+    // Close button click handler
+    closeBtn.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        navOverlay.classList.remove('active');
+        body.style.overflow = '';
+    });
+    
     mobileMenuBtn.addEventListener('click', () => {
         navLinks.classList.toggle('active');
         mobileMenuBtn.classList.toggle('active');

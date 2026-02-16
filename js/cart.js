@@ -218,6 +218,17 @@ const Cart = {
             const overlay = document.createElement('div');
             overlay.className = 'cart-overlay active';
             overlay.id = 'cart-overlay';
+            
+            // Add inline styles to ensure proper z-index (below mini-cart at 1005)
+            overlay.style.cssText = `
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1004;
+                pointer-events: auto;
+                cursor: pointer;
+            `;
+            
             overlay.addEventListener('click', () => this.hideMiniCart());
             document.body.appendChild(overlay);
             document.body.style.overflow = 'hidden';
