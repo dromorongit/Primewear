@@ -269,7 +269,7 @@ function createProductCard(product, showQuickAdd = true) {
                 <div class="product-pricing">
                     <span class="product-price">GH₵${price.toFixed(2)}</span>
                 </div>
-                <div class="product-stock ${inStock ? '' : 'out'}">${inStock ? `In Stock (${product.stock})` : 'Out of Stock'}</div>
+                ${!inStock ? `<div class="product-stock out">Out of Stock</div>` : ''}
                 <button class="add-to-cart-btn" onclick="addToCartFromCard(${product.id})">
                     ${product.type === 'wholesale' ? 'Add to Cart (Wholesale)' : 'Add to Cart'}
                 </button>
