@@ -190,18 +190,20 @@
                     <span></span>
                 </button>
             </div>
-            <div class="mini-cart">
-                <div class="mini-cart-header">
-                    <h4>Shopping Cart</h4>
-                    <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
-                </div>
-                <div class="mini-cart-items">
-                    <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
-                </div>
-                <div class="mini-cart-footer"></div>
-            </div>
         </div>
     </nav>
+    
+    <!-- Mini Cart Dropdown (outside navbar to avoid z-index issues) -->
+    <div class="mini-cart">
+        <div class="mini-cart-header">
+            <h4>Shopping Cart</h4>
+            <button class="mini-cart-close" onclick="Cart.hideMiniCart()">&times;</button>
+        </div>
+        <div class="mini-cart-items">
+            <p style="text-align: center; padding: 30px; color: var(--text-muted);">Your cart is empty</p>
+        </div>
+        <div class="mini-cart-footer"></div>
+    </div>
 
     <!-- Page Header -->
     <section class="page-header">
