@@ -268,7 +268,6 @@ function createProductCard(product, showQuickAdd = true) {
                 <h4 class="product-name">${product.name}</h4>
                 <div class="product-pricing">
                     <span class="product-price">GH₵${price.toFixed(2)}</span>
-                    ${product.wholesale_price && product.type === 'wholesale' ? `<span class="product-wholesale-price">Wholesale: GH₵${product.wholesale_price.toFixed(2)}</span>` : ''}
                 </div>
                 <div class="product-stock ${inStock ? '' : 'out'}">${inStock ? `In Stock (${product.stock})` : 'Out of Stock'}</div>
                 <button class="add-to-cart-btn" onclick="addToCartFromCard(${product.id})">
@@ -316,7 +315,6 @@ function quickView(productId) {
                 <h2>${product.name}</h2>
                 <div class="product-pricing">
                     <span class="product-price">GH₵${Cart.getItemPrice(product).toFixed(2)}</span>
-                    ${product.wholesale_price ? `<span class="product-wholesale-price">GH₵${product.wholesale_price.toFixed(2)} (Wholesale)</span>` : ''}
                 </div>
                 <p class="quick-view-description">${product.short_description}</p>
                 <p>${product.long_description}</p>
