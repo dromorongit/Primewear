@@ -265,6 +265,7 @@ const CartPage = {
     // Render cart table
     renderCartTable() {
         const cartTableBody = document.querySelector('.cart-table tbody');
+        const cartItemsMobile = document.getElementById('cart-items-mobile');
         if (!cartTableBody) return;
         
         if (Cart.items.length === 0) {
@@ -276,6 +277,14 @@ const CartPage = {
                     </td>
                 </tr>
             `;
+            if (cartItemsMobile) {
+                cartItemsMobile.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">Your cart is empty</p>
+                        <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                `;
+            }
             this.updateCartTotals();
             return;
         }
@@ -308,6 +317,30 @@ const CartPage = {
                 </td>
             </tr>
         `).join('');
+        
+        // Render mobile card layout
+        if (cartItemsMobile) {
+            cartItemsMobile.innerHTML = Cart.items.map((item, index) => `
+                <div class="cart-item-card">
+                    <img src="${item.image}" alt="${item.name}" onerror="this.src='assets/images/placeholder.jpg'">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">GH₵${Cart.getItemPrice(item).toFixed(2)}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="CartPage.updateQuantity(${index}, -1)">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="${item.stock}" onchange="CartPage.changeQuantity(${index}, this.value)">
+                            <button class="quantity-btn" onclick="CartPage.updateQuantity(${index}, 1)">+</button>
+                        </div>
+                        ${item.size ? `<div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Size: ${item.size}</div>` : ''}
+                        ${item.color ? `<div style="font-size: 0.85rem; color: var(--text-muted);">${item.color}</div>` : ''}
+                        <div style="font-size: 0.85rem; margin-top: 8px;" class="${item.stock > 0 ? '' : 'out'}">
+                            ${item.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" onclick="Cart.removeItem(${index})">&times;</button>
+                </div>
+            `).join('');
+        }
         
         this.updateCartTotals();
     },

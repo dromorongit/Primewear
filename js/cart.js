@@ -140,7 +140,13 @@ const Cart = {
                 <div class="mini-cart-item-info">
                     <div class="mini-cart-item-name">${item.name}</div>
                     <div class="mini-cart-item-price">${this.getItemPrice(item).toFixed(2)}</div>
-                    <div class="mini-cart-item-quantity">Qty: ${item.quantity}${item.size ? ` | Size: ${item.size}` : ''}${item.color ? ` | ${item.color}` : ''}</div>
+                    <div class="mini-cart-item-quantity">
+                        <button class="mini-cart-qty-btn" onclick="Cart.updateQuantity(${index}, ${item.quantity - 1})">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="mini-cart-qty-btn" onclick="Cart.updateQuantity(${index}, ${item.quantity + 1})">+</button>
+                    </div>
+                    ${item.size ? `<div class="mini-cart-item-size">Size: ${item.size}</div>` : ''}
+                    ${item.color ? `<div class="mini-cart-item-color">${item.color}</div>` : ''}
                 </div>
                 <button class="mini-cart-item-remove" onclick="Cart.removeItem(${index})">&times;</button>
             </div>
