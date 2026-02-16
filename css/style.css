@@ -1953,20 +1953,49 @@ p {
     }
 
     .products-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
     
     .product-image {
-        height: 220px;
+        height: 140px;
     }
     
     .product-info {
-        padding: 15px;
+        padding: 10px;
     }
     
     .product-name {
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+    
+    .product-price {
         font-size: 1rem;
+    }
+    
+    .product-wholesale-price {
+        font-size: 0.75rem;
+    }
+    
+    .add-to-cart-btn {
+        padding: 8px;
+        font-size: 0.75rem;
+    }
+    
+    .product-badge {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+    }
+    
+    .product-action-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+    
+    .product-actions {
+        padding: 8px;
     }
     
     /* Always show product actions on mobile */
@@ -2485,13 +2514,30 @@ p {
         font-size: 16px; /* Prevents zoom on iOS */
     }
     
-    /* Product Grid */
+    /* Product Grid - Small Mobile */
     .products-grid {
-        gap: 15px;
+        gap: 10px;
     }
     
     .product-image {
-        height: 180px;
+        height: 120px;
+    }
+    
+    .product-info {
+        padding: 8px;
+    }
+    
+    .product-name {
+        font-size: 0.8rem;
+    }
+    
+    .product-price {
+        font-size: 0.9rem;
+    }
+    
+    .add-to-cart-btn {
+        padding: 6px 8px;
+        font-size: 0.7rem;
     }
     
     /* Category Cards */
