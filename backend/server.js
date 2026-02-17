@@ -23,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from admin folder
 app.use(express.static(path.join(__dirname, 'admin')));
 
+// Serve static files from assets folder (logos, images)
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
