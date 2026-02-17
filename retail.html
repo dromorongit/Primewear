@@ -288,7 +288,13 @@
     <script>
         let retailProducts = [];
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Show loading state
+            document.getElementById('retail-products').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;"><h3>Loading products...</h3></div>';
+            
+            // Fetch products from API
+            await fetchProducts();
+            
             // Get all retail products
             retailProducts = getProductsByType('retail');
             document.getElementById('product-count').textContent = retailProducts.length;

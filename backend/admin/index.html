@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prime Wear Admin Panel</title>
+  <link rel="icon" href="../assets/images/primewearicon.PNG" type="image/png">
+  <link rel="stylesheet" href="css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Login Section -->
+  <section id="login-section" class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <img src="../assets/images/primewearlogo.PNG" alt="Prime Wear Logo" class="login-logo">
+        <h2>Admin Login</h2>
+        <p>Prime Wear Wholesale Management</p>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">
+          <span>Login</span>
+          <i class="fas fa-sign-in-alt"></i>
+        </button>
+        <div id="login-error" class="error-message"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Admin Dashboard -->
+  <section id="admin-section" class="admin-container" style="display: none;">
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+      <button class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <img src="../assets/images/primewearlogo.PNG" alt="Prime Wear Logo" class="mobile-logo">
+      <button class="logout-btn-mobile" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="../assets/images/primewearlogo.PNG" alt="Prime Wear Logo" class="sidebar-logo">
+        <button class="close-sidebar" id="close-sidebar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" data-page="dashboard">
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-link" data-page="add-product">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Product</span>
+        </a>
+        <a href="#" class="nav-link" data-page="manage-products">
+          <i class="fas fa-boxes"></i>
+          <span>Manage Products</span>
+        </a>
+        <a href="#" class="nav-link" data-page="orders">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Orders</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Dashboard Page -->
+      <div id="dashboard-page" class="page active">
+        <div class="page-header">
+          <h1>Dashboard</h1>
+          <p>Welcome to Prime Wear Admin Panel</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #C6A75E;">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="total-products">0</h3>
+              <p>Total Products</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #2ecc71;">
+              <i class="fas fa Wholesale"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="wholesale-products">0</h3>
+              <p>Wholesale Products</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #3498db;">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="retail-products">0</h3>
+              <p>Retail Products</p>
+            </div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-icon" style="background: #e74c3c;">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="low-stock">0</h3>
+              <p>Low Stock Items</p>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-charts">
+          <div class="chart-card">
+            <h3>Quick Actions</h3>
+            <div class="quick-actions">
+              <button class="action-btn" onclick="navigateTo('add-product')">
+                <i class="fas fa-plus"></i>
+                <span>Add New Product</span>
+              </button>
+              <button class="action-btn" onclick="navigateTo('manage-products')">
+                <i class="fas fa-list"></i>
+                <span>View All Products</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Product Page -->
+      <div id="add-product-page" class="page">
+        <div class="page-header">
+          <h1>Add New Product</h1>
+          <p>Create a new product listing</p>
+        </div>
+        <form id="add-product-form" class="product-form">
+          <div class="form-section">
+            <h3>Basic Information</h3>
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label for="product-name">Product Name *</label>
+                <input type="text" id="product-name" name="name" placeholder="Enter product name" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="wholesale-price">Wholesale Price</label>
+                <input type="number" id="wholesale-price" name="wholesale_price" placeholder="0.00" step="0.01" min="0">
+                <small>Required for wholesale products</small>
+              </div>
+              <div class="form-group">
+                <label for="retail-price">Retail Price</label>
+                <input type="number" id="retail-price" name="retail_price" placeholder="0.00" step="0.01" min="0">
+                <small>Required for retail products</small>
+              </div>
+              <div class="form-group">
+                <label for="sales-price">Sales Price</label>
+                <input type="number" id="sales-price" name="sales_price" placeholder="0.00" step="0.01" min="0">
+                <small>Optional promotional price</small>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label for="short-description">Short Description *</label>
+                <textarea id="short-description" name="short_description" rows="2" placeholder="Brief product description" required></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label for="long-description">Long Description</label>
+                <textarea id="long-description" name="long_description" rows="4" placeholder="Detailed product description"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Inventory</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="stock">Stock Quantity *</label>
+                <input type="number" id="stock" name="stock" placeholder="0" min="0" required>
+              </div>
+              <div class="form-group">
+                <label for="min-order">Minimum Order Quantity</label>
+                <input type="number" id="min-order" name="minimum_order_quantity" placeholder="1" min="1">
+                <small>Required for wholesale</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Categories</h3>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="categories" value="T-Shirt, Dresses, Suits & More">
+                <span class="checkmark"></span>
+                <span>T-Shirt, Dresses, Suits & More</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="categories" value="Watches, Bags, Belts & More">
+                <span class="checkmark"></span>
+                <span>Watches, Bags, Belts & More</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="categories" value="Exclusive Designer Items">
+                <span class="checkmark"></span>
+                <span>Exclusive Designer Items</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Product Options</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Sizes (comma separated)</label>
+                <input type="text" id="sizes" name="sizes" placeholder="S, M, L, XL">
+              </div>
+              <div class="form-group">
+                <label>Colors (comma separated)</label>
+                <input type="text" id="colors" name="colors" placeholder="Black, White, Blue">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="switch-label">
+                  <input type="checkbox" id="is-featured" name="is_featured">
+                  <span class="slider"></span>
+                  <span class="label-text">Featured Product</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Product Images</h3>
+            <div class="image-upload-container">
+              <div class="image-upload-box">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Drag & drop images or click to upload</p>
+                <input type="file" id="main-image-input" accept="image/*" multiple>
+                <button type="button" class="btn-secondary" onclick="document.getElementById('main-image-input').click()">
+                  Select Images
+                </button>
+              </div>
+              <div id="image-preview" class="image-preview"></div>
+            </div>
+            <div class="form-group">
+              <label>Or enter image URLs manually</label>
+              <input type="text" id="main-image-url" placeholder="Main image URL (Cloudinary)">
+              <input type="text" id="additional-image-urls" placeholder="Additional images URLs (comma separated)">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-save"></i>
+              <span>Save Product</span>
+            </button>
+            <button type="reset" class="btn-secondary">
+              <i class="fas fa-redo"></i>
+              <span>Reset Form</span>
+            </button>
+          </div>
+          <div id="form-message" class="form-message"></div>
+        </form>
+      </div>
+
+      <!-- Manage Products Page -->
+      <div id="manage-products-page" class="page">
+        <div class="page-header">
+          <h1>Manage Products</h1>
+          <p>View and manage all products</p>
+        </div>
+        <div class="filters-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-products" placeholder="Search products...">
+          </div>
+          <div class="filter-group">
+            <select id="filter-category">
+              <option value="">All Categories</option>
+              <option value="T-Shirt, Dresses, Suits & More">T-Shirt, Dresses, Suits & More</option>
+              <option value="Watches, Bags, Belts & More">Watches, Bags, Belts & More</option>
+              <option value="Exclusive Designer Items">Exclusive Designer Items</option>
+            </select>
+            <select id="filter-type">
+              <option value="">All Types</option>
+              <option value="wholesale">Wholesale</option>
+              <option value="retail">Retail</option>
+            </select>
+            <select id="filter-featured">
+              <option value="">All Products</option>
+              <option value="true">Featured Only</option>
+            </select>
+          </div>
+        </div>
+        <div class="products-table-container">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Prices</th>
+                <th>Stock</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body">
+              <tr>
+                <td colspan="7" class="loading-cell">Loading products...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+      <!-- Orders Page -->
+      <div id="orders-page" class="page">
+        <div class="page-header">
+          <h1>Orders</h1>
+          <p>Manage customer orders</p>
+        </div>
+        <div class="coming-soon">
+          <i class="fas fa-shopping-cart"></i>
+          <h2>Orders Integration Coming Soon</h2>
+          <p>We're working on bringing you the full order management system.</p>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- Edit Product Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Product</h2>
+        <button class="close-modal" onclick="closeEditModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="edit-product-form" class="product-form">
+        <input type="hidden" id="edit-product-id">
+        <div class="form-section">
+          <h3>Basic Information</h3>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="edit-name">Product Name *</label>
+              <input type="text" id="edit-name" name="name" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-wholesale-price">Wholesale Price</label>
+              <input type="number" id="edit-wholesale-price" name="wholesale_price" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label for="edit-retail-price">Retail Price</label>
+              <input type="number" id="edit-retail-price" name="retail_price" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label for="edit-sales-price">Sales Price</label>
+              <input type="number" id="edit-sales-price" name="sales_price" step="0.01" min="0">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="edit-short-description">Short Description *</label>
+              <textarea id="edit-short-description" name="short_description" rows="2" required></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="edit-long-description">Long Description</label>
+              <textarea id="edit-long-description" name="long_description" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3>Inventory</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-stock">Stock *</label>
+              <input type="number" id="edit-stock" name="stock" min="0" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-min-order">Min Order Qty</label>
+              <input type="number" id="edit-min-order" name="minimum_order_quantity" min="1">
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3>Categories</h3>
+          <div class="checkbox-group" id="edit-categories">
+            <label class="checkbox-item">
+              <input type="checkbox" name="categories" value="T-Shirt, Dresses, Suits & More">
+              <span class="checkmark"></span>
+              <span>T-Shirt, Dresses, Suits & More</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="categories" value="Watches, Bags, Belts & More">
+              <span class="checkmark"></span>
+              <span>Watches, Bags, Belts & More</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="categories" value="Exclusive Designer Items">
+              <span class="checkmark"></span>
+              <span>Exclusive Designer Items</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-section">
+          <h3>Product Images</h3>
+          <div class="form-group">
+            <label for="edit-main-image">Main Image URL</label>
+            <input type="text" id="edit-main-image" name="main_image">
+          </div>
+          <div class="form-group">
+            <label for="edit-additional-images">Additional Images (comma separated URLs)</label>
+            <input type="text" id="edit-additional-images" name="additional_images">
+          </div>
+          <div class="form-group">
+            <label class="switch-label">
+              <input type="checkbox" id="edit-is-featured" name="is_featured">
+              <span class="slider"></span>
+              <span class="label-text">Featured</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i>
+            <span>Update Product</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

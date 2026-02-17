@@ -368,8 +368,16 @@
     
     <script>
         let filteredProducts = [];
+        let isDataLoaded = false;
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Show loading state
+            document.getElementById('products-grid').innerHTML = '<div class="empty-state"><h3>Loading products...</h3></div>';
+            
+            // Fetch products from API
+            await fetchProducts();
+            isDataLoaded = true;
+            
             // Get initial filter from URL
             const urlParams = new URLSearchParams(window.location.search);
             const category = urlParams.get('category') || 'all';
