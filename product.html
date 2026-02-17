@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View product details at Prime Wear Wholesale">
+    <title>Product Details - Prime Wear Wholesale</title>
+    <link rel="icon" href="assets/images/primewearicon.PNG" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .product-detail-section {
+            padding: 120px 0 60px;
+        }
+        
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+        
+        .product-detail-image {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .product-detail-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .product-detail-thumbnails {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .product-detail-thumbnails img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition-fast);
+        }
+        
+        .product-detail-thumbnails img.active,
+        .product-detail-thumbnails img:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .product-detail-info h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .product-detail-category {
+            display: inline-block;
+            background: rgba(198, 167, 94, 0.15);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
+        .product-detail-pricing {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .product-detail-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .product-detail-stock {
+            font-size: 0.9rem;
+        }
+        
+        .product-detail-stock.in-stock {
+            color: #27AE60;
+        }
+        
+        .product-detail-stock.out-of-stock {
+            color: #E74C3C;
+        }
+        
+        .product-detail-description {
+            margin: 30px 0;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+        
+        .product-detail-options {
+            margin: 30px 0;
+        }
+        
+        .product-detail-option {
+            margin-bottom: 20px;
+        }
+        
+        .product-detail-option label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .product-detail-option select {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .product-detail-quantity {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .product-detail-quantity label {
+            font-weight: 500;
+        }
+        
+        .product-detail-quantity .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .product-detail-quantity .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            background: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-detail-quantity .quantity-btn:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .product-detail-quantity .quantity-btn:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .product-detail-quantity .quantity-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .product-detail-quantity .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-left: none;
+            border-right: none;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .product-detail-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .product-detail-actions .btn {
+            padding: 15px 40px;
+        }
+        
+        .product-detail-moq {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .product-detail-moq strong {
+            color: var(--primary-color);
+        }
+        
+        .back-to-shop {
+            margin-bottom: 30px;
+        }
+        
+        .back-to-shop a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+        
+        .back-to-shop a:hover {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 992px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .product-detail-image {
+                position: static;
+            }
+            
+            .product-detail-info h1 {
+                font-size: 1.5rem;
+            }
+            
+            .product-detail-price {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail-section {
+                padding: 100px 0 40px;
+            }
+            
+            .product-detail-actions {
+                flex-direction: column;
+            }
+            
+            .product-detail-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Prime Wear</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                <span class="logo-text">Prime Wear</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="shop.html">Shop Wholesale</a></li>
+                <li><a href="retail.html">Shop Retail</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="back-to-shop">
+                <a href="javascript:history.back()">
+                    <i class="fas fa-arrow-left"></i> Back to Shop
+                </a>
+            </div>
+            
+            <div class="product-detail-grid">
+                <div class="product-detail-image">
+                    <img id="main-image" src="" alt="Product Image">
+                    <div class="product-detail-thumbnails" id="thumbnails"></div>
+                </div>
+                
+                <div class="product-detail-info">
+                    <span class="product-detail-category" id="category"></span>
+                    <h1 id="product-name"></h1>
+                    
+                    <div class="product-detail-pricing">
+                        <span class="product-detail-price" id="price"></span>
+                        <span class="product-detail-stock" id="stock"></span>
+                    </div>
+                    
+                    <p class="product-detail-description" id="description"></p>
+                    
+                    <div class="product-detail-options">
+                        <div class="product-detail-option" id="size-option" style="display: none;">
+                            <label>Size:</label>
+                            <select id="size-select"></select>
+                        </div>
+                        
+                        <div class="product-detail-option" id="color-option" style="display: none;">
+                            <label>Color:</label>
+                            <select id="color-select"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="product-detail-quantity">
+                        <label>Quantity:</label>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn" onclick="updateDetailQuantity(-1)">-</button>
+                            <input type="number" class="quantity-input" id="detail-qty" value="1" min="1">
+                            <button class="quantity-btn" onclick="updateDetailQuantity(1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-detail-moq" id="moq-display"></div>
+                    
+                    <div class="product-detail-actions">
+                        <button class="btn btn-primary" onclick="addToCartFromDetail()">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                        <a href="shop.html" class="btn btn-outline">
+                            <i class="fas fa-store"></i> Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/primewearlogo.PNG" alt="Prime Wear Logo">
+                        <span class="logo-text">Prime Wear</span>
+                    </a>
+                    <p>Your trusted partner for premium wholesale and retail fashion in Accra, Ghana.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@darkieswholesale?_t=8pRvmC9BaTt&_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.instagram.com/darkieswholesale?igsh=MTk0YmN6ZnAyZGo4cQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="shop.html">Shop Wholesale</a></li>
+                        <li><a href="retail.html">Shop Retail</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html?category=clothings">Clothings</a></li>
+                        <li><a href="shop.html?category=accessories">Accessories</a></li>
+                        <li><a href="retail.html">Premium Collection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Prime Wear Wholesale. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/message/A6Y7H3ZVDOFJO1" target="_blank" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Files -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Product Detail Page Logic
+        let currentProduct = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProductDetail();
+        });
+        
+        function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            if (!productId) {
+                window.location.href = 'shop.html';
+                return;
+            }
+            
+            currentProduct = getProductById(productId);
+            
+            if (!currentProduct) {
+                window.location.href = 'shop.html';
+                return;
+            }
+            
+            renderProductDetail();
+        }
+        
+        function renderProductDetail() {
+            const price = Cart.getItemPrice(currentProduct);
+            const inStock = currentProduct.stock > 0;
+            const isWholesale = currentProduct.type === 'wholesale';
+            const moq = currentProduct.moq || 1;
+            
+            // Update page title
+            document.title = `${currentProduct.name} - Prime Wear Wholesale`;
+            
+            // Main image
+            document.getElementById('main-image').src = currentProduct.images[0];
+            document.getElementById('main-image').alt = currentProduct.name;
+            
+            // Thumbnails
+            const thumbnailsContainer = document.getElementById('thumbnails');
+            thumbnailsContainer.innerHTML = currentProduct.images.map((img, index) => `
+                <img src="${img}" alt="${currentProduct.name} ${index + 1}" 
+                     class="${index === 0 ? 'active' : ''}"
+                     onclick="changeMainImage('${img}', this)">
+            `).join('');
+            
+            // Category badge
+            const categoryEl = document.getElementById('category');
+            categoryEl.textContent = currentProduct.category;
+            categoryEl.style.background = isWholesale ? 'rgba(166, 124, 82, 0.15)' : 'rgba(198, 167, 94, 0.15)';
+            categoryEl.style.color = isWholesale ? 'var(--secondary-color)' : 'var(--primary-color)';
+            
+            // Product name
+            document.getElementById('product-name').textContent = currentProduct.name;
+            
+            // Price
+            document.getElementById('price').textContent = `GH₵${price.toFixed(2)}`;
+            
+            // Stock status
+            const stockEl = document.getElementById('stock');
+            if (inStock) {
+                stockEl.textContent = `In Stock (${currentProduct.stock} available)`;
+                stockEl.className = 'product-detail-stock in-stock';
+            } else {
+                stockEl.textContent = 'Out of Stock';
+                stockEl.className = 'product-detail-stock out-of-stock';
+            }
+            
+            // Description
+            document.getElementById('description').textContent = currentProduct.long_description;
+            
+            // Size option
+            const sizeOption = document.getElementById('size-option');
+            const sizeSelect = document.getElementById('size-select');
+            if (currentProduct.sizes && currentProduct.sizes.length > 0 && currentProduct.sizes[0] !== 'One Size') {
+                sizeOption.style.display = 'block';
+                sizeSelect.innerHTML = currentProduct.sizes.map(size => 
+                    `<option value="${size}">${size}</option>`
+                ).join('');
+            }
+            
+            // Color option
+            const colorOption = document.getElementById('color-option');
+            const colorSelect = document.getElementById('color-select');
+            if (currentProduct.colors && currentProduct.colors.length > 0) {
+                colorOption.style.display = 'block';
+                colorSelect.innerHTML = currentProduct.colors.map(color => 
+                    `<option value="${color}">${color}</option>`
+                ).join('');
+            }
+            
+            // Quantity - set min to MOQ for wholesale
+            const qtyInput = document.getElementById('detail-qty');
+            qtyInput.min = moq;
+            qtyInput.value = moq;
+            
+            // MOQ display
+            const moqDisplay = document.getElementById('moq-display');
+            if (isWholesale) {
+                moqDisplay.innerHTML = `<strong>Minimum Order Quantity:</strong> ${moq} units`;
+            } else {
+                moqDisplay.innerHTML = '';
+            }
+        }
+        
+        function changeMainImage(src, thumbnail) {
+            document.getElementById('main-image').src = src;
+            document.querySelectorAll('.product-detail-thumbnails img').forEach(img => {
+                img.classList.remove('active');
+            });
+            thumbnail.classList.add('active');
+        }
+        
+        function updateDetailQuantity(change) {
+            const qtyInput = document.getElementById('detail-qty');
+            const moq = currentProduct.moq || 1;
+            let currentQty = parseInt(qtyInput.value) || moq;
+            let newQty = currentQty + change;
+            
+            if (newQty < moq) {
+                newQty = moq;
+            } else if (newQty > currentProduct.stock) {
+                newQty = currentProduct.stock;
+            }
+            
+            qtyInput.value = newQty;
+        }
+        
+        function addToCartFromDetail() {
+            if (!currentProduct) return;
+            
+            const qtyInput = document.getElementById('detail-qty');
+            const quantity = parseInt(qtyInput.value) || (currentProduct.moq || 1);
+            const sizeSelect = document.getElementById('size-select');
+            const colorSelect = document.getElementById('color-select');
+            
+            const size = sizeSelect ? sizeSelect.value : null;
+            const color = colorSelect ? colorSelect.value : null;
+            
+            Cart.addItem(currentProduct, quantity, size, color);
+        }
+    </script>
+</body>
+</html>

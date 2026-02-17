@@ -257,6 +257,11 @@ function createProductCard(product, showQuickAdd = true) {
             ${product.type === 'wholesale' ? '<span class="product-badge wholesale">Wholesale</span>' : '<span class="product-badge">Retail</span>'}
             <div class="product-image">
                 <img src="${product.images[0]}" alt="${product.name}" loading="lazy" onerror="this.src='assets/images/placeholder.jpg'">
+                <div class="product-overlay">
+                    <a href="product.html?id=${product.id}" class="view-details-btn">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                </div>
                 ${showQuickAdd ? `
                 <div class="product-actions">
                     <button class="product-action-btn" title="Add to Wishlist">&hearts;</button>
