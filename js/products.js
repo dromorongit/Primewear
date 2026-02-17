@@ -2,8 +2,8 @@
 // Prime Wear Wholesale - Products API Service
 // ================================================
 
-// API Base URL - Points to backend server
-const API_BASE_URL = window.location.origin + '/api';
+// API Base URL - Points to backend server (Railway deployment)
+const API_BASE_URL = 'https://primewear-production.up.railway.app/api';
 
 // Products data from API
 let productsData = [];

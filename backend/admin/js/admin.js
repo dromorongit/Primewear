@@ -1,6 +1,6 @@
 // Prime Wear Admin Panel JavaScript
 // API Base URL - Update this for production
-const API_BASE_URL = window.location.origin + '/api';
+const API_BASE_URL = 'https://primewear-production.up.railway.app/api';
 
 // State
 let authToken = localStorage.getItem('adminToken');
