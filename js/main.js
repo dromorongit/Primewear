@@ -249,6 +249,8 @@ function initQuantitySelectors() {
 function createProductCard(product, showQuickAdd = true) {
     const price = Cart.getItemPrice(product);
     const inStock = product.stock > 0;
+    const isWholesale = product.type === 'wholesale';
+    const moq = product.moq || 1;
     
     return `
         <div class="product-card" data-product-id="${product.id}">
@@ -270,6 +272,14 @@ function createProductCard(product, showQuickAdd = true) {
                     <span class="product-price">GH₵${price.toFixed(2)}</span>
                 </div>
                 ${!inStock ? `<div class="product-stock out">Out of Stock</div>` : ''}
+                <div class="product-quantity" data-moq="${moq}" data-product-id="${product.id}">
+                    ${isWholesale ? `<span class="qty-label">Min Order: ${moq}</span>` : ''}
+                    <div class="qty-controls">
+                        <button class="qty-btn qty-decrease" onclick="updateCardQuantity(${product.id}, -1)">-</button>
+                        <input type="number" class="qty-input" id="qty-${product.id}" value="${moq}" min="${moq}" max="${product.stock}" readonly>
+                        <button class="qty-btn qty-increase" onclick="updateCardQuantity(${product.id}, 1)">+</button>
+                    </div>
+                </div>
                 <button class="add-to-cart-btn" onclick="addToCartFromCard(${product.id})">
                     ${product.type === 'wholesale' ? 'Add to Cart (Wholesale)' : 'Add to Cart'}
                 </button>
@@ -291,8 +301,34 @@ function quickAddToCart(productId) {
 function addToCartFromCard(productId) {
     const product = getProductById(productId);
     if (product) {
-        Cart.addItem(product, 1);
+        let quantity = 1;
+        const qtyInput = document.getElementById(`qty-${productId}`);
+        if (qtyInput) {
+            quantity = parseInt(qtyInput.value) || (product.moq || 1);
+        }
+        Cart.addItem(product, quantity);
     }
+}
+
+// Update quantity from product card
+function updateCardQuantity(productId, change) {
+    const product = getProductById(productId);
+    if (!product) return;
+    
+    const qtyInput = document.getElementById(`qty-${productId}`);
+    if (!qtyInput) return;
+    
+    const moq = product.moq || 1;
+    let currentQty = parseInt(qtyInput.value) || moq;
+    let newQty = currentQty + change;
+    
+    if (newQty < moq) {
+        newQty = moq;
+    } else if (newQty > product.stock) {
+        newQty = product.stock;
+    }
+    
+    qtyInput.value = newQty;
 }
 
 // ================================================

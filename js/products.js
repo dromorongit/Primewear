@@ -13,6 +13,7 @@ const productsData = [
         long_description: "Our premium cotton blend t-shirts are designed for comfort and durability. Made from 60% cotton and 40% polyester, these shirts maintain their shape and color even after multiple washes. Ideal for wholesale buyers looking for quality at competitive prices.",
         price: 45.00,
         wholesale_price: 25.00,
+        moq: 10,
         images: [
             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
             "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500"
@@ -30,6 +31,7 @@ const productsData = [
         long_description: "Elevate your inventory with our designer denim jackets. Featuring premium denim fabric, custom buttons, and tailored fit, these jackets are perfect for the fashion-forward customer.",
         price: 120.00,
         wholesale_price: 75.00,
+        moq: 5,
         images: [
             "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500",
             "https://images.unsplash.com/photo-1523205565295-f8e91625443e?w=500"
@@ -47,6 +49,7 @@ const productsData = [
         long_description: "Add a touch of elegance to your offerings with our luxury silk scarves. Made from 100% mulberry silk, these scarves feature stunning prints and are perfect for both casual and formal occasions.",
         price: 85.00,
         wholesale_price: 45.00,
+        moq: 5,
         images: [
             "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa33?w=500",
             "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=500"
@@ -64,6 +67,7 @@ const productsData = [
         long_description: "Upgrade your accessory collection with our premium leather belt set. Each belt is crafted from genuine leather with durable metal buckles. Set includes casual and formal options.",
         price: 95.00,
         wholesale_price: 55.00,
+        moq: 5,
         images: [
             "https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=500",
             "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500"
@@ -81,6 +85,7 @@ const productsData = [
         long_description: "Our classic polo shirts are a staple for any wholesale inventory. Made from breathable piqué fabric, these shirts offer comfort and style. Sold in packs of 10 for convenient bulk ordering.",
         price: 350.00,
         wholesale_price: 200.00,
+        moq: 1,
         images: [
             "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500",
             "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500"
@@ -98,6 +103,7 @@ const productsData = [
         long_description: "Timeless elegance meets modern design in our minimalist watch collection. Each watch features a stainless steel case, genuine leather strap, and Japanese quartz movement.",
         price: 450.00,
         wholesale_price: 280.00,
+        moq: 3,
         images: [
             "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500",
             "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=500"
@@ -115,6 +121,7 @@ const productsData = [
         long_description: "Stay warm and stylish with our premium cotton hoodies. Made from 100% heavyweight cotton fleece, these hoodies feature a kangaroo pocket and adjustable drawstring.",
         price: 75.00,
         wholesale_price: 42.00,
+        moq: 10,
         images: [
             "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500",
             "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500"
@@ -132,6 +139,7 @@ const productsData = [
         long_description: "Protect your customers' eyes in style with our designer sunglasses. Features 100% UV protection, polarized lenses, and lightweight frames. Set includes multiple trendy designs.",
         price: 180.00,
         wholesale_price: 95.00,
+        moq: 5,
         images: [
             "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500",
             "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500"
@@ -149,6 +157,7 @@ const productsData = [
         long_description: "Upgrade your business offerings with our premium formal trousers. Made from high-quality polyester-wool blend, these trousers offer comfort and professionalism. Wrinkle-resistant and easy to care for.",
         price: 550.00,
         wholesale_price: 320.00,
+        moq: 1,
         images: [
             "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500",
             "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=500"
@@ -166,6 +175,7 @@ const productsData = [
         long_description: "Elevate your accessory inventory with our leather handbag collection. Each bag is crafted from genuine leather with premium hardware. Includes tote, shoulder, crossbody, and clutch styles.",
         price: 680.00,
         wholesale_price: 420.00,
+        moq: 2,
         images: [
             "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500",
             "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=500"
@@ -183,6 +193,7 @@ const productsData = [
         long_description: "Capture the summer vibe with our casual dress collection. Made from lightweight, breathable fabrics perfect for warm weather. Features trendy designs that customers will love.",
         price: 320.00,
         wholesale_price: 180.00,
+        moq: 5,
         images: [
             "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500",
             "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500"
@@ -200,6 +211,7 @@ const productsData = [
         long_description: "Stock your shelves with our premium leather wallet set. Each wallet is crafted from genuine leather with careful attention to detail. Includes bifold and cardholder styles.",
         price: 400.00,
         wholesale_price: 220.00,
+        moq: 5,
         images: [
             "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500",
             "https://images.unsplash.com/photo-1512149177596-f817c7ef5d4c?w=500"
