@@ -248,27 +248,43 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="toggle-switch">
+                <label class="checkbox-item" style="margin-top: 10px;">
                   <input type="checkbox" id="is-featured" name="is_featured">
-                  <span class="toggle-slider"></span>
-                  <span class="toggle-label">Featured Product</span>
+                  <span class="checkmark"></span>
+                  <span>Featured Product (appears on homepage)</span>
                 </label>
               </div>
             </div>
           </div>
 
           <div class="form-section">
-            <h3>Product Images</h3>
+            <h3>Main Product Image</h3>
             <div class="image-upload-container">
               <div class="image-upload-box">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <p>Drag & drop images or click to upload</p>
-                <input type="file" id="main-image-input" accept="image/*" multiple>
+                <p>Drag & drop image or click to upload</p>
+                <input type="file" id="main-image-input" accept="image/*">
                 <button type="button" class="btn-secondary" onclick="document.getElementById('main-image-input').click()">
-                  Select Images
+                  Select Image
                 </button>
               </div>
               <div id="image-preview" class="image-preview"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Additional Product Images</h3>
+            <p style="margin-bottom: 15px; color: var(--text-light);">Upload additional images to show in the product gallery</p>
+            <div class="image-upload-container">
+              <div class="image-upload-box">
+                <i class="fas fa-images"></i>
+                <p>Drag & drop images or click to upload</p>
+                <input type="file" id="additional-images-input" accept="image/*" multiple>
+                <button type="button" class="btn-secondary" onclick="document.getElementById('additional-images-input').click()">
+                  Select Additional Images
+                </button>
+              </div>
+              <div id="additional-image-preview" class="image-preview"></div>
             </div>
           </div>
 
@@ -446,10 +462,10 @@
             <div id="edit-image-preview" class="image-preview"></div>
           </div>
           <div class="form-group" style="margin-top: 20px;">
-            <label class="toggle-switch">
+            <label class="checkbox-item">
               <input type="checkbox" id="edit-is-featured" name="is_featured">
-              <span class="toggle-slider"></span>
-              <span class="toggle-label">Featured Product</span>
+              <span class="checkmark"></span>
+              <span>Featured Product (appears on homepage)</span>
             </label>
           </div>
         </div>

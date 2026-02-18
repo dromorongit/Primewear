@@ -69,6 +69,13 @@ function setupEventListeners() {
     imageInput.addEventListener('change', handleImageUpload);
   }
 
+  // Additional images upload
+  const additionalImageInput = document.getElementById('additional-images-input');
+  if (additionalImageInput) {
+    additionalImageInput.addEventListener('change', handleAdditionalImagePreview);
+    additionalImageInput.addEventListener('change', handleAdditionalImageUpload);
+  }
+
   // Edit image upload
   const editImageInput = document.getElementById('edit-image-input');
   if (editImageInput) {
@@ -357,20 +364,20 @@ async function handleAddProduct(e) {
   messageDiv.className = 'form-message';
   messageDiv.style.display = 'block';
 
-  // Get the file input
-  const imageInput = document.getElementById('main-image-input');
-  const files = imageInput ? imageInput.files : [];
+  // Get the file inputs
+  const mainImageInput = document.getElementById('main-image-input');
+  const additionalImageInput = document.getElementById('additional-images-input');
+  const mainFiles = mainImageInput ? mainImageInput.files : [];
+  const additionalFiles = additionalImageInput ? additionalImageInput.files : [];
 
   let mainImage = uploadedMainImage;
   let additionalImages = [...uploadedAdditionalImages];
 
-  // Upload images to Cloudinary if files selected
-  if (files.length > 0) {
+  // Upload main image to Cloudinary if file selected
+  if (mainFiles.length > 0) {
     try {
       const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append('images', files[i]);
-      }
+      formData.append('images', mainFiles[0]);
 
       const uploadResponse = await fetch(`${API_BASE_URL}/products/upload`, {
         method: 'POST',
@@ -384,11 +391,37 @@ async function handleAddProduct(e) {
         const uploadData = await uploadResponse.json();
         if (uploadData.urls && uploadData.urls.length > 0) {
           mainImage = uploadData.urls[0];
-          additionalImages = uploadData.urls.slice(1);
         }
       }
     } catch (error) {
-      console.error('Image upload error:', error);
+      console.error('Main image upload error:', error);
+    }
+  }
+
+  // Upload additional images to Cloudinary if files selected
+  if (additionalFiles.length > 0) {
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < additionalFiles.length; i++) {
+        formData.append('images', additionalFiles[i]);
+      }
+
+      const uploadResponse = await fetch(`${API_BASE_URL}/products/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        },
+        body: formData
+      });
+
+      if (uploadResponse.ok) {
+        const uploadData = await uploadResponse.json();
+        if (uploadData.urls && uploadData.urls.length > 0) {
+          additionalImages = [...additionalImages, ...uploadData.urls];
+        }
+      }
+    } catch (error) {
+      console.error('Additional images upload error:', error);
     }
   }
 
@@ -449,6 +482,7 @@ async function handleAddProduct(e) {
       uploadedMainImage = '';
       uploadedAdditionalImages = [];
       document.getElementById('image-preview').innerHTML = '';
+      document.getElementById('additional-image-preview').innerHTML = '';
       loadDashboardStats();
       setTimeout(() => {
         messageDiv.className = 'form-message';
@@ -653,7 +687,59 @@ async function handleImageUpload(e) {
       const data = await response.json();
       if (data.urls && data.urls.length > 0) {
         uploadedMainImage = data.urls[0];
-        uploadedAdditionalImages = data.urls.slice(1);
+      }
+    }
+  } catch (error) {
+    console.error('Upload error:', error);
+  }
+}
+
+// Additional Images Preview Handler
+function handleAdditionalImagePreview(e) {
+  const files = e.target.files;
+  const previewContainer = document.getElementById('additional-image-preview');
+  previewContainer.innerHTML = '';
+
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = `
+        <img src="${e.target.result}" alt="Preview">
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      previewContainer.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Additional Images Upload to Cloudinary
+async function handleAdditionalImageUpload(e) {
+  const files = e.target.files;
+  if (!files || files.length === 0) return;
+
+  try {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('images', files[i]);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/products/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.urls && data.urls.length > 0) {
+        uploadedAdditionalImages = [...uploadedAdditionalImages, ...data.urls];
       }
     }
   } catch (error) {
