@@ -393,17 +393,25 @@
     
     <script>
         // Render featured products on homepage
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Fetch products first
+            await fetchProducts();
+            
             const featuredProducts = getProductsByType('wholesale').slice(0, 8);
             const container = document.getElementById('featured-products');
             
             if (container && featuredProducts.length > 0) {
                 container.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+            } else if (container) {
+                container.innerHTML = '<p style="text-align:center;grid-column:1/-1;padding:40px;">No products available. Check back soon!</p>';
             }
         });
 
         // Filter and render products
-        function filterAndRender(type) {
+        async function filterAndRender(type) {
+            // Ensure products are loaded
+            await fetchProducts();
+            
             const container = document.getElementById('featured-products');
             const tabs = document.querySelectorAll('.product-tab');
             
@@ -419,7 +427,11 @@
                 products = getProductsByType(type).slice(0, 8);
             }
             
-            container.innerHTML = products.map(product => createProductCard(product)).join('');
+            if (products.length > 0) {
+                container.innerHTML = products.map(product => createProductCard(product)).join('');
+            } else {
+                container.innerHTML = '<p style="text-align:center;grid-column:1/-1;padding:40px;">No products available in this category.</p>';
+            }
         }
     </script>
 </body>
