@@ -8,6 +8,10 @@ let currentPage = 1;
 let totalPages = 1;
 let productsData = [];
 
+// Store uploaded images temporarily
+let uploadedMainImage = '';
+let uploadedAdditionalImages = [];
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
@@ -62,6 +66,14 @@ function setupEventListeners() {
   const imageInput = document.getElementById('main-image-input');
   if (imageInput) {
     imageInput.addEventListener('change', handleImagePreview);
+    imageInput.addEventListener('change', handleImageUpload);
+  }
+
+  // Edit image upload
+  const editImageInput = document.getElementById('edit-image-input');
+  if (editImageInput) {
+    editImageInput.addEventListener('change', handleEditImagePreview);
+    editImageInput.addEventListener('change', handleEditImageUpload);
   }
 }
 
@@ -340,6 +352,46 @@ async function handleAddProduct(e) {
   const form = e.target;
   const messageDiv = document.getElementById('form-message');
 
+  // Show loading
+  messageDiv.textContent = 'Uploading images...';
+  messageDiv.className = 'form-message';
+  messageDiv.style.display = 'block';
+
+  // Get the file input
+  const imageInput = document.getElementById('main-image-input');
+  const files = imageInput ? imageInput.files : [];
+
+  let mainImage = uploadedMainImage;
+  let additionalImages = [...uploadedAdditionalImages];
+
+  // Upload images to Cloudinary if files selected
+  if (files.length > 0) {
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);
+      }
+
+      const uploadResponse = await fetch(`${API_BASE_URL}/products/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        },
+        body: formData
+      });
+
+      if (uploadResponse.ok) {
+        const uploadData = await uploadResponse.json();
+        if (uploadData.urls && uploadData.urls.length > 0) {
+          mainImage = uploadData.urls[0];
+          additionalImages = uploadData.urls.slice(1);
+        }
+      }
+    } catch (error) {
+      console.error('Image upload error:', error);
+    }
+  }
+
   // Collect form data
   const formData = {
     name: form.name.value,
@@ -353,8 +405,8 @@ async function handleAddProduct(e) {
     is_featured: form.is_featured.checked,
     sizes: form.sizes.value ? form.sizes.value.split(',').map(s => s.trim()) : [],
     colors: form.colors.value ? form.colors.value.split(',').map(c => c.trim()) : [],
-    main_image: form.main_image_url.value,
-    additional_images: form.additional_image_urls.value ? form.additional_image_urls.value.split(',').map(u => u.trim()) : []
+    main_image: mainImage,
+    additional_images: additionalImages
   };
 
   // Get selected categories
@@ -393,6 +445,10 @@ async function handleAddProduct(e) {
       messageDiv.textContent = 'Product added successfully!';
       messageDiv.className = 'form-message success';
       form.reset();
+      // Clear uploaded images
+      uploadedMainImage = '';
+      uploadedAdditionalImages = [];
+      document.getElementById('image-preview').innerHTML = '';
       loadDashboardStats();
       setTimeout(() => {
         messageDiv.className = 'form-message';
@@ -422,9 +478,24 @@ function openEditModal(productId) {
   document.getElementById('edit-long-description').value = product.long_description || '';
   document.getElementById('edit-stock').value = product.stock;
   document.getElementById('edit-min-order').value = product.minimum_order_quantity || '';
-  document.getElementById('edit-main-image').value = product.main_image || '';
-  document.getElementById('edit-additional-images').value = product.additional_images ? product.additional_images.join(', ') : '';
   document.getElementById('edit-is-featured').checked = product.is_featured;
+  
+  // Store current images
+  uploadedMainImage = product.main_image || '';
+  uploadedAdditionalImages = product.additional_images || [];
+  
+  // Show current images in preview
+  const previewContainer = document.getElementById('edit-image-preview');
+  previewContainer.innerHTML = '';
+  
+  if (product.main_image) {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `
+      <img src="${product.main_image}" alt="Main Image">
+    `;
+    previewContainer.appendChild(div);
+  }
 
   // Set categories
   document.querySelectorAll('#edit-categories input[name="categories"]').forEach(cb => {
@@ -445,6 +516,47 @@ async function handleEditProduct(e) {
   const form = e.target;
   const productId = document.getElementById('edit-product-id').value;
 
+  // Get the file input
+  const imageInput = document.getElementById('edit-image-input');
+  const files = imageInput ? imageInput.files : [];
+
+  let mainImage = uploadedMainImage;
+  let additionalImages = [...uploadedAdditionalImages];
+
+  // Upload new images to Cloudinary if files selected
+  if (files.length > 0) {
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);
+      }
+
+      const uploadResponse = await fetch(`${API_BASE_URL}/products/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        },
+        body: formData
+      });
+
+      if (uploadResponse.ok) {
+        const uploadData = await uploadResponse.json();
+        if (uploadData.urls && uploadData.urls.length > 0) {
+          // If new main image uploaded, use it
+          if (!uploadedMainImage) {
+            mainImage = uploadData.urls[0];
+            additionalImages = uploadData.urls.slice(1);
+          } else {
+            // Add to additional images
+            additionalImages = [...additionalImages, ...uploadData.urls];
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Image upload error:', error);
+    }
+  }
+
   const formData = {
     name: form.name.value,
     wholesale_price: form.wholesale_price.value ? parseFloat(form.wholesale_price.value) : null,
@@ -455,8 +567,8 @@ async function handleEditProduct(e) {
     stock: parseInt(form.stock.value),
     minimum_order_quantity: form.minimum_order_quantity.value ? parseInt(form.minimum_order_quantity.value) : null,
     is_featured: form.is_featured.checked,
-    main_image: form.main_image.value,
-    additional_images: form.additional_images.value ? form.additional_images.value.split(',').map(u => u.trim()) : []
+    main_image: mainImage,
+    additional_images: additionalImages
   };
 
   // Get selected categories
@@ -516,6 +628,90 @@ async function deleteProduct(productId) {
     alert('Error connecting to server');
     console.error('Delete product error:', error);
   }
+}
+
+// Image Upload to Cloudinary - Add Product
+async function handleImageUpload(e) {
+  const files = e.target.files;
+  if (!files || files.length === 0) return;
+
+  try {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('images', files[i]);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/products/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.urls && data.urls.length > 0) {
+        uploadedMainImage = data.urls[0];
+        uploadedAdditionalImages = data.urls.slice(1);
+      }
+    }
+  } catch (error) {
+    console.error('Upload error:', error);
+  }
+}
+
+// Image Upload to Cloudinary - Edit Product
+async function handleEditImageUpload(e) {
+  const files = e.target.files;
+  if (!files || files.length === 0) return;
+
+  try {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('images', files[i]);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/products/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.urls && data.urls.length > 0) {
+        uploadedAdditionalImages = [...uploadedAdditionalImages, ...data.urls];
+      }
+    }
+  } catch (error) {
+    console.error('Upload error:', error);
+  }
+}
+
+// Edit Image Preview Handler
+function handleEditImagePreview(e) {
+  const files = e.target.files;
+  const previewContainer = document.getElementById('edit-image-preview');
+  
+  if (!files || files.length === 0) {
+    return;
+  }
+
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = `
+        <img src="${e.target.result}" alt="Preview">
+      `;
+      previewContainer.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 // Image Preview Handler

@@ -248,10 +248,10 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="switch-label">
+                <label class="toggle-switch">
                   <input type="checkbox" id="is-featured" name="is_featured">
-                  <span class="slider"></span>
-                  <span class="label-text">Featured Product</span>
+                  <span class="toggle-slider"></span>
+                  <span class="toggle-label">Featured Product</span>
                 </label>
               </div>
             </div>
@@ -269,11 +269,6 @@
                 </button>
               </div>
               <div id="image-preview" class="image-preview"></div>
-            </div>
-            <div class="form-group">
-              <label>Or enter image URLs manually</label>
-              <input type="text" id="main-image-url" placeholder="Main image URL (Cloudinary)">
-              <input type="text" id="additional-image-urls" placeholder="Additional images URLs (comma separated)">
             </div>
           </div>
 
@@ -439,19 +434,22 @@
         </div>
         <div class="form-section">
           <h3>Product Images</h3>
-          <div class="form-group">
-            <label for="edit-main-image">Main Image URL</label>
-            <input type="text" id="edit-main-image" name="main_image">
+          <div class="image-upload-container">
+            <div class="image-upload-box">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Drag & drop images or click to upload</p>
+              <input type="file" id="edit-image-input" accept="image/*" multiple>
+              <button type="button" class="btn-secondary" onclick="document.getElementById('edit-image-input').click()">
+                Select Images
+              </button>
+            </div>
+            <div id="edit-image-preview" class="image-preview"></div>
           </div>
-          <div class="form-group">
-            <label for="edit-additional-images">Additional Images (comma separated URLs)</label>
-            <input type="text" id="edit-additional-images" name="additional_images">
-          </div>
-          <div class="form-group">
-            <label class="switch-label">
+          <div class="form-group" style="margin-top: 20px;">
+            <label class="toggle-switch">
               <input type="checkbox" id="edit-is-featured" name="is_featured">
-              <span class="slider"></span>
-              <span class="label-text">Featured</span>
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Featured Product</span>
             </label>
           </div>
         </div>
