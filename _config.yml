@@ -1,0 +1,15 @@
+# Jekyll configuration for GitHub Pages
+# Exclude backend folder from build
+exclude:
+  - backend
+  - node_modules
+  - package.json
+  - package-lock.json
+
+# Build settings
+timezone: Africa/Accra
+permalink: /:title/
+
+# GitHub Pages settings
+future: true
+show_drafts: false
