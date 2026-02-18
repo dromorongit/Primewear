@@ -44,11 +44,21 @@ function setupEventListeners() {
   // Mobile menu toggle
   document.getElementById('menu-toggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.add('active');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (overlay) overlay.classList.add('active');
   });
 
   document.getElementById('close-sidebar').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.remove('active');
+    closeSidebar();
   });
+
+  // Close sidebar when clicking overlay
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', () => {
+      closeSidebar();
+    });
+  }
 
   // Search and filters
   document.getElementById('search-products').addEventListener('input', debounce(loadProducts, 500));
@@ -143,7 +153,7 @@ function navigateTo(page) {
   }
 
   // Close mobile sidebar
-  document.getElementById('sidebar').classList.remove('active');
+  closeSidebar();
 
   // Load data based on page
   if (page === 'dashboard') {
@@ -151,6 +161,14 @@ function navigateTo(page) {
   } else if (page === 'manage-products') {
     loadProducts();
   }
+}
+
+// Close sidebar function
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar) sidebar.classList.remove('active');
+  if (overlay) overlay.classList.remove('active');
 }
 
 // Dashboard Stats
