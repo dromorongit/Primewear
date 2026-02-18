@@ -169,10 +169,10 @@ const Checkout = {
         `).join('');
         
         // Update totals
-        if (subtotalEl) subtotalEl.textContent = `GH₵${Cart.getSubtotal().toFixed(2)}`;
-        if (shippingEl) {
-            const shipping = Cart.getShipping();
-            shippingEl.textContent = shipping === 0 ? 'FREE' : `GH₵${shipping.toFixed(2)}`;
+        // Hide shipping row on cart page
+        const cartShippingRow = document.querySelector('.cart-shipping-row');
+        if (cartShippingRow) {
+            cartShippingRow.style.display = 'none';
         }
         if (totalEl) totalEl.textContent = `GH₵${Cart.getTotal().toFixed(2)}`;
     },
@@ -397,9 +397,10 @@ const CartPage = {
         
         if (subtotalEl) subtotalEl.textContent = `GH₵${Cart.getSubtotal().toFixed(2)}`;
         
-        if (shippingEl) {
-            const shipping = Cart.getShipping();
-            shippingEl.innerHTML = shipping === 0 ? '<span style="color: #27AE60;">FREE</span>' : `GH₵${shipping.toFixed(2)}`;
+        // Hide shipping row
+        const shippingRow = document.querySelector('.cart-shipping-row');
+        if (shippingRow) {
+            shippingRow.style.display = 'none';
         }
         
         if (totalEl) totalEl.textContent = `GH₵${Cart.getTotal().toFixed(2)}`;

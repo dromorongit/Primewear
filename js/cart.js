@@ -97,10 +97,9 @@ const Cart = {
         }, 0);
     },
     
-    // Calculate shipping (free over certain amount)
+    // Calculate shipping (no shipping fee)
     getShipping() {
-        const subtotal = this.getSubtotal();
-        return subtotal > 500 ? 0 : 25;
+        return 0;
     },
     
     // Calculate total
@@ -288,7 +287,6 @@ const Cart = {
         
         message += `━━━━━━━━━━━━━━━━━━━━%0A`;
         message += `*Subtotal:* GH₵${this.getSubtotal().toFixed(2)}%0A`;
-        message += `*Shipping:* ${this.getShipping() === 0 ? 'FREE' : 'GH₵' + this.getShipping().toFixed(2)}%0A`;
         message += `*TOTAL:* GH₵${this.getTotal().toFixed(2)}%0A%0A`;
         message += `*Order Notes:* ${customerInfo.notes || 'None'}`;
         
