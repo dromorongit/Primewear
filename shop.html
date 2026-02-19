@@ -374,8 +374,9 @@
             // Show loading state
             document.getElementById('products-grid').innerHTML = '<div class="empty-state"><h3>Loading products...</h3></div>';
             
-            // Fetch products from API
-            await fetchProducts();
+            // Fetch wholesale products from API
+            const data = await fetchWholesaleProducts();
+            filteredProducts = data;
             isDataLoaded = true;
             
             // Get initial filter from URL
@@ -404,44 +405,71 @@
             const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
             const inStockOnly = document.getElementById('in-stock').checked;
             
-            // Get wholesale products
-            filteredProducts = getProductsByType('wholesale');
+            // Products are already filtered by wholesale from API
+            let products = [...filteredProducts];
             
             // Filter by category
             if (category !== 'all') {
-                filteredProducts = filteredProducts.filter(p => 
-                    p.category.toLowerCase() === category.toLowerCase()
+                products = products.filter(p => 
+                    p.category && p.category.toLowerCase() === category.toLowerCase()
                 );
             }
             
             // Filter by price
-            filteredProducts = filteredProducts.filter(p => {
+            products = products.filter(p => {
                 const price = Cart.getItemPrice(p);
                 return price >= minPrice && price <= maxPrice;
             });
             
             // Filter by stock
             if (inStockOnly) {
-                filteredProducts = filteredProducts.filter(p => p.stock > 0);
+                products = products.filter(p => p.stock > 0);
             }
             
             // Update product count
-            document.getElementById('product-count').textContent = filteredProducts.length;
+            document.getElementById('product-count').textContent = products.length;
             
             // Render products
-            renderProducts();
+            renderProducts(products);
         }
         
         function sortProducts() {
             const sortBy = document.getElementById('sort-select').value;
-            filteredProducts = sortProductsFn(filteredProducts, sortBy);
-            renderProducts();
+            const category = document.querySelector('input[name="category"]:checked').value;
+            const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+            const inStockOnly = document.getElementById('in-stock').checked;
+            
+            // Start with filtered products
+            let products = [...filteredProducts];
+            
+            // Apply category filter
+            if (category !== 'all') {
+                products = products.filter(p => 
+                    p.category && p.category.toLowerCase() === category.toLowerCase()
+                );
+            }
+            
+            // Apply price filter
+            products = products.filter(p => {
+                const price = Cart.getItemPrice(p);
+                return price >= minPrice && price <= maxPrice;
+            });
+            
+            // Apply stock filter
+            if (inStockOnly) {
+                products = products.filter(p => p.stock > 0);
+            }
+            
+            // Sort products
+            products = sortProductsFn(products, sortBy);
+            renderProducts(products);
         }
         
-        function renderProducts() {
+        function renderProducts(products) {
             const container = document.getElementById('products-grid');
             
-            if (filteredProducts.length === 0) {
+            if (products.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <h3>No products found</h3>
@@ -452,7 +480,7 @@
                 return;
             }
             
-            container.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
         }
         
         function resetFilters() {

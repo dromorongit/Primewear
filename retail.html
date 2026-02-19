@@ -292,11 +292,10 @@
             // Show loading state
             document.getElementById('retail-products').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;"><h3>Loading products...</h3></div>';
             
-            // Fetch products from API
-            await fetchProducts();
+            // Fetch retail products from API
+            const data = await fetchRetailProducts();
+            retailProducts = data;
             
-            // Get all retail products
-            retailProducts = getProductsByType('retail');
             document.getElementById('product-count').textContent = retailProducts.length;
             renderRetailProducts(retailProducts);
         });
@@ -304,18 +303,20 @@
         function filterRetail(category) {
             const tabs = document.querySelectorAll('.product-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             
-            if (category === 'all') {
-                retailProducts = getProductsByType('retail');
-            } else {
-                retailProducts = getProductsByType('retail').filter(p => 
-                    p.category.toLowerCase() === category.toLowerCase()
+            let products = [...retailProducts];
+            
+            if (category !== 'all') {
+                products = products.filter(p => 
+                    p.category && p.category.toLowerCase() === category.toLowerCase()
                 );
             }
             
-            document.getElementById('product-count').textContent = retailProducts.length;
-            renderRetailProducts(retailProducts);
+            document.getElementById('product-count').textContent = products.length;
+            renderRetailProducts(products);
         }
         
         function sortRetailProducts() {
