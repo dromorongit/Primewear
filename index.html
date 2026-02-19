@@ -394,10 +394,8 @@
     <script>
         // Render featured products on homepage
         document.addEventListener('DOMContentLoaded', async () => {
-            // Fetch products first
-            await fetchProducts();
-            
-            const featuredProducts = getProductsByType('wholesale').slice(0, 8);
+            // Fetch featured products from API
+            const featuredProducts = await fetchFeaturedProducts();
             const container = document.getElementById('featured-products');
             
             if (container && featuredProducts.length > 0) {
@@ -417,15 +415,19 @@
             
             // Update active tab
             tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Filter and render
-            let products;
-            if (type === 'all') {
-                products = getAllProducts().slice(0, 8);
-            } else {
-                products = getProductsByType(type).slice(0, 8);
+            if (event && event.target) {
+                event.target.classList.add('active');
             }
+            
+            // Get all products and filter
+            let products = getAllProducts();
+            
+            if (type !== 'all') {
+                products = products.filter(p => p.type === type);
+            }
+            
+            // Show first 8 products
+            products = products.slice(0, 8);
             
             if (products.length > 0) {
                 container.innerHTML = products.map(product => createProductCard(product)).join('');
