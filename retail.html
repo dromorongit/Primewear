@@ -297,8 +297,14 @@
             await fetchProducts();
             allProducts = getAllProducts();
             
+            console.log('All products loaded:', allProducts);
+            console.log('First product wholesale_price:', allProducts[0]?.wholesale_price);
+            console.log('First product retail_price:', allProducts[0]?.retail_price);
+            
             // Filter products that have retail_price (for retail page)
             retailProducts = allProducts.filter(p => p.retail_price && p.retail_price > 0);
+            
+            console.log('Products with retail_price:', retailProducts.length);
             
             document.getElementById('product-count').textContent = retailProducts.length;
             renderRetailProducts(retailProducts);
