@@ -83,6 +83,7 @@ function transformProduct(product) {
         long_description: product.long_description,
         price: product.retail_price || product.sales_price || 0,
         wholesale_price: product.wholesale_price,
+        retail_price: product.retail_price,
         sales_price: product.sales_price,
         moq: product.minimum_order_quantity,
         images: product.main_image ? [product.main_image, ...(product.additional_images || [])] : [],
