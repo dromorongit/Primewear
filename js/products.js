@@ -17,11 +17,16 @@ async function fetchProducts() {
         return productsData;
     }
     
-    // If already loading, wait for it to complete
+    // If already loading, wait for the existing fetch to complete
     if (isLoading) {
         console.log('Already loading, waiting for fetch to complete...');
-        // Wait a bit and check again
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait for a short time and check again
+        let attempts = 0;
+        while (isLoading && attempts < 20) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        console.log('After waiting, productsData length:', productsData.length);
         return productsData;
     }
     
