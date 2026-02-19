@@ -47,9 +47,9 @@ const productSchema = new mongoose.Schema({
     type: [{
       type: String,
       enum: [
-        'T-Shirt, Dresses, Suits & More',
-        'Watches, Bags, Belts & More',
-        'Exclusive Designer Items'
+        'Clothings',
+        'Accessories',
+        'Premium Collection'
       ]
     }],
     default: []

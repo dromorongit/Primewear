@@ -271,7 +271,6 @@ function createProductCard(product, showQuickAdd = true) {
                 ` : ''}
             </div>
             <div class="product-info">
-                <span class="product-category">${product.category}</span>
                 <h4 class="product-name">${product.name}</h4>
                 <div class="product-pricing">
                     <span class="product-price">GH₵${price.toFixed(2)}</span>
