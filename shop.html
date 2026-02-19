@@ -367,6 +367,7 @@
     <script src="js/main.js"></script>
     
     <script>
+        let allProducts = [];
         let filteredProducts = [];
         let isDataLoaded = false;
         
@@ -374,9 +375,9 @@
             // Show loading state
             document.getElementById('products-grid').innerHTML = '<div class="empty-state"><h3>Loading products...</h3></div>';
             
-            // Fetch wholesale products from API
-            const data = await fetchWholesaleProducts();
-            filteredProducts = data;
+            // Fetch all products from API
+            await fetchProducts();
+            allProducts = getAllProducts();
             isDataLoaded = true;
             
             // Get initial filter from URL
@@ -405,8 +406,8 @@
             const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
             const inStockOnly = document.getElementById('in-stock').checked;
             
-            // Products are already filtered by wholesale from API
-            let products = [...filteredProducts];
+            // Filter products that have wholesale_price (for wholesale page)
+            let products = allProducts.filter(p => p.wholesale_price > 0);
             
             // Filter by category
             if (category !== 'all') {
@@ -417,7 +418,7 @@
             
             // Filter by price
             products = products.filter(p => {
-                const price = Cart.getItemPrice(p);
+                const price = p.wholesale_price || Cart.getItemPrice(p);
                 return price >= minPrice && price <= maxPrice;
             });
             
@@ -440,8 +441,8 @@
             const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
             const inStockOnly = document.getElementById('in-stock').checked;
             
-            // Start with filtered products
-            let products = [...filteredProducts];
+            // Start with all products that have wholesale_price
+            let products = allProducts.filter(p => p.wholesale_price > 0);
             
             // Apply category filter
             if (category !== 'all') {
@@ -452,7 +453,7 @@
             
             // Apply price filter
             products = products.filter(p => {
-                const price = Cart.getItemPrice(p);
+                const price = p.wholesale_price || Cart.getItemPrice(p);
                 return price >= minPrice && price <= maxPrice;
             });
             

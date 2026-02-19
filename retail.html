@@ -286,15 +286,19 @@
     <script src="js/main.js"></script>
     
     <script>
+        let allProducts = [];
         let retailProducts = [];
         
         document.addEventListener('DOMContentLoaded', async () => {
             // Show loading state
             document.getElementById('retail-products').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;"><h3>Loading products...</h3></div>';
             
-            // Fetch retail products from API
-            const data = await fetchRetailProducts();
-            retailProducts = data;
+            // Fetch all products from API
+            await fetchProducts();
+            allProducts = getAllProducts();
+            
+            // Filter products that have retail_price (for retail page)
+            retailProducts = allProducts.filter(p => p.retail_price > 0);
             
             document.getElementById('product-count').textContent = retailProducts.length;
             renderRetailProducts(retailProducts);
@@ -307,7 +311,8 @@
                 event.target.classList.add('active');
             }
             
-            let products = [...retailProducts];
+            // Start with products that have retail_price
+            let products = allProducts.filter(p => p.retail_price > 0);
             
             if (category !== 'all') {
                 products = products.filter(p => 
