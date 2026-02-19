@@ -407,7 +407,7 @@
             const inStockOnly = document.getElementById('in-stock').checked;
             
             // Filter products that have wholesale_price (for wholesale page)
-            let products = allProducts.filter(p => p.wholesale_price > 0);
+            let products = allProducts.filter(p => p.wholesale_price && p.wholesale_price > 0);
             
             // Filter by category
             if (category !== 'all') {
@@ -442,7 +442,7 @@
             const inStockOnly = document.getElementById('in-stock').checked;
             
             // Start with all products that have wholesale_price
-            let products = allProducts.filter(p => p.wholesale_price > 0);
+            let products = allProducts.filter(p => p.wholesale_price && p.wholesale_price > 0);
             
             // Apply category filter
             if (category !== 'all') {

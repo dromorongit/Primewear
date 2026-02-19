@@ -298,7 +298,7 @@
             allProducts = getAllProducts();
             
             // Filter products that have retail_price (for retail page)
-            retailProducts = allProducts.filter(p => p.retail_price > 0);
+            retailProducts = allProducts.filter(p => p.retail_price && p.retail_price > 0);
             
             document.getElementById('product-count').textContent = retailProducts.length;
             renderRetailProducts(retailProducts);
@@ -312,7 +312,7 @@
             }
             
             // Start with products that have retail_price
-            let products = allProducts.filter(p => p.retail_price > 0);
+            let products = allProducts.filter(p => p.retail_price && p.retail_price > 0);
             
             if (category !== 'all') {
                 products = products.filter(p => 
