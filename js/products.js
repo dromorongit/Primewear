@@ -13,36 +13,27 @@ let isLoading = false;
 async function fetchProducts() {
     // If products are already loaded, return them
     if (productsData.length > 0) {
-        console.log('Products already loaded, returning cached data');
         return productsData;
     }
     
     // If already loading, wait for the existing fetch to complete
     if (isLoading) {
-        console.log('Already loading, waiting for fetch to complete...');
         // Wait for a short time and check again
         let attempts = 0;
         while (isLoading && attempts < 20) {
             await new Promise(resolve => setTimeout(resolve, 100));
             attempts++;
         }
-        console.log('After waiting, productsData length:', productsData.length);
         return productsData;
     }
     
     isLoading = true;
     
     try {
-        console.log('Fetching products from:', `${API_BASE_URL}/products?limit=100`);
         const response = await fetch(`${API_BASE_URL}/products?limit=100`);
-        console.log('Response status:', response.status);
         if (response.ok) {
             const data = await response.json();
-            console.log('API Response data:', data);
             productsData = data.products.map(transformProduct);
-            console.log('Transformed products:', productsData.length);
-        } else {
-            console.error('API Error:', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -70,15 +61,10 @@ async function fetchWholesaleProducts() {
 // Fetch retail products
 async function fetchRetailProducts() {
     try {
-        console.log('Fetching retail products from:', `${API_BASE_URL}/products/retail?limit=100`);
         const response = await fetch(`${API_BASE_URL}/products/retail?limit=100`);
-        console.log('Retail response status:', response.status);
         if (response.ok) {
             const data = await response.json();
-            console.log('Retail products data:', data);
             return data.products.map(transformProduct);
-        } else {
-            console.error('Retail API Error:', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error fetching retail products:', error);
@@ -89,15 +75,10 @@ async function fetchRetailProducts() {
 // Fetch featured products
 async function fetchFeaturedProducts() {
     try {
-        console.log('Fetching featured products from:', `${API_BASE_URL}/products/featured`);
         const response = await fetch(`${API_BASE_URL}/products/featured`);
-        console.log('Featured response status:', response.status);
         if (response.ok) {
             const data = await response.json();
-            console.log('Featured products data:', data);
             return data.map(transformProduct);
-        } else {
-            console.error('Featured API Error:', response.status, response.statusText);
         }
     } catch (error) {
         console.error('Error fetching featured products:', error);

@@ -380,10 +380,6 @@
             allProducts = getAllProducts();
             isDataLoaded = true;
             
-            console.log('All products loaded:', allProducts);
-            console.log('First product wholesale_price:', allProducts[0]?.wholesale_price);
-            console.log('First product retail_price:', allProducts[0]?.retail_price);
-            
             // Get initial filter from URL
             const urlParams = new URLSearchParams(window.location.search);
             const category = urlParams.get('category') || 'all';
@@ -412,8 +408,6 @@
             
             // Filter products that have wholesale_price (for wholesale page)
             let products = allProducts.filter(p => p.wholesale_price && p.wholesale_price > 0);
-            
-            console.log('Products with wholesale_price:', products.length);
             
             // Filter by category
             if (category !== 'all') {

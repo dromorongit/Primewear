@@ -316,20 +316,11 @@ function addToCartFromCard(productId) {
 
 // Update quantity from product card
 function updateCardQuantity(productId, change) {
-    console.log('updateCardQuantity called:', productId, change);
     const product = getProductById(productId);
-    console.log('Product found:', product);
-    if (!product) {
-        console.log('Product not found!');
-        return;
-    }
+    if (!product) return;
     
     const qtyInput = document.getElementById(`qty-${productId}`);
-    console.log('Input element:', qtyInput);
-    if (!qtyInput) {
-        console.log('Input not found!');
-        return;
-    }
+    if (!qtyInput) return;
     
     const moq = product.moq || 1;
     let currentQty = parseInt(qtyInput.value) || moq;
@@ -342,7 +333,6 @@ function updateCardQuantity(productId, change) {
     }
     
     qtyInput.value = newQty;
-    console.log('New quantity:', newQty);
 }
 
 // ================================================
