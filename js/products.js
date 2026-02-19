@@ -11,7 +11,20 @@ let isLoading = false;
 
 // Fetch all products from API
 async function fetchProducts() {
-    if (isLoading) return productsData;
+    // If products are already loaded, return them
+    if (productsData.length > 0) {
+        console.log('Products already loaded, returning cached data');
+        return productsData;
+    }
+    
+    // If already loading, wait for it to complete
+    if (isLoading) {
+        console.log('Already loading, waiting for fetch to complete...');
+        // Wait a bit and check again
+        await new Promise(resolve => setTimeout(resolve, 500));
+        return productsData;
+    }
+    
     isLoading = true;
     
     try {
