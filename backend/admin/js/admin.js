@@ -540,13 +540,31 @@ function openEditModal(productId) {
   const previewContainer = document.getElementById('edit-image-preview');
   previewContainer.innerHTML = '';
   
+  // Show main image
   if (product.main_image) {
     const div = document.createElement('div');
     div.className = 'preview-item';
     div.innerHTML = `
       <img src="${product.main_image}" alt="Main Image">
+      <span class="preview-label">Main Image</span>
     `;
     previewContainer.appendChild(div);
+  }
+  
+  // Show additional images
+  if (product.additional_images && product.additional_images.length > 0) {
+    product.additional_images.forEach((img, index) => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = `
+        <img src="${img}" alt="Additional Image ${index + 1}">
+        <button type="button" class="remove-btn" onclick="removeEditAdditionalImage(${index})">
+          <i class="fas fa-times"></i>
+        </button>
+        <span class="preview-label">Additional ${index + 1}</span>
+      `;
+      previewContainer.appendChild(div);
+    });
   }
 
   // Set categories
@@ -555,6 +573,41 @@ function openEditModal(productId) {
   });
 
   document.getElementById('edit-modal').classList.add('active');
+}
+
+// Remove additional image from edit
+function removeEditAdditionalImage(index) {
+  if (uploadedAdditionalImages[index]) {
+    uploadedAdditionalImages.splice(index, 1);
+    // Re-render the preview
+    const previewContainer = document.getElementById('edit-image-preview');
+    previewContainer.innerHTML = '';
+    
+    // Show main image
+    if (uploadedMainImage) {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = `
+        <img src="${uploadedMainImage}" alt="Main Image">
+        <span class="preview-label">Main Image</span>
+      `;
+      previewContainer.appendChild(div);
+    }
+    
+    // Show remaining additional images
+    uploadedAdditionalImages.forEach((img, idx) => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.innerHTML = `
+        <img src="${img}" alt="Additional Image ${idx + 1}">
+        <button type="button" class="remove-btn" onclick="removeEditAdditionalImage(${idx})">
+          <i class="fas fa-times"></i>
+        </button>
+        <span class="preview-label">Additional ${idx + 1}</span>
+      `;
+      previewContainer.appendChild(div);
+    });
+  }
 }
 
 // Close Edit Modal
