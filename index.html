@@ -421,12 +421,18 @@
                 event.target.classList.add('active');
             }
             
-            // Get all products and filter
+            // Get all products
             let products = getAllProducts();
             
-            if (type !== 'all') {
-                products = products.filter(p => p.type === type);
+            // Filter by type based on price
+            if (type === 'wholesale') {
+                // Show products with wholesale price
+                products = products.filter(p => p.wholesale_price && p.wholesale_price > 0);
+            } else if (type === 'retail') {
+                // Show products with retail price
+                products = products.filter(p => p.retail_price && p.retail_price > 0);
             }
+            // 'all' shows all products
             
             // Show first 8 products
             products = products.slice(0, 8);
