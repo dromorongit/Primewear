@@ -429,8 +429,9 @@
                 // Show products with wholesale price
                 products = products.filter(p => p.wholesale_price && p.wholesale_price > 0);
             } else if (type === 'retail') {
-                // Show products with retail price
+                // Show products with retail price - override type to show retail prices
                 products = products.filter(p => p.retail_price && p.retail_price > 0);
+                products = products.map(p => ({ ...p, type: 'retail', moq: 1 }));
             }
             // 'all' shows all products
             
