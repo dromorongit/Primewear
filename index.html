@@ -400,6 +400,8 @@
             
             if (container && featuredProducts.length > 0) {
                 container.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+                // Initialize quantity controls
+                initProductCardQuantityControls();
             } else if (container) {
                 container.innerHTML = '<p style="text-align:center;grid-column:1/-1;padding:40px;">No products available. Check back soon!</p>';
             }
@@ -431,6 +433,8 @@
             
             if (products.length > 0) {
                 container.innerHTML = products.map(product => createProductCard(product)).join('');
+                // Initialize quantity controls
+                initProductCardQuantityControls();
             } else {
                 container.innerHTML = '<p style="text-align:center;grid-column:1/-1;padding:40px;">No products available in this category.</p>';
             }

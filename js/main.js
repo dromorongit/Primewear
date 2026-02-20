@@ -317,10 +317,16 @@ function addToCartFromCard(productId) {
 // Update quantity from product card
 function updateCardQuantity(productId, change) {
     const product = getProductById(productId);
-    if (!product) return;
+    if (!product) {
+        console.error('Product not found:', productId);
+        return;
+    }
     
-    const qtyInput = document.getElementById(`qty-${productId}`);
-    if (!qtyInput) return;
+    const qtyInput = document.getElementById('qty-' + productId);
+    if (!qtyInput) {
+        console.error('Input not found for product:', productId);
+        return;
+    }
     
     const moq = product.moq || 1;
     let currentQty = parseInt(qtyInput.value) || moq;
@@ -333,6 +339,33 @@ function updateCardQuantity(productId, change) {
     }
     
     qtyInput.value = newQty;
+}
+
+// Initialize quantity selectors for product cards (call after rendering products)
+function initProductCardQuantityControls() {
+    document.querySelectorAll('.product-quantity').forEach(container => {
+        const decreaseBtn = container.querySelector('.qty-decrease');
+        const increaseBtn = container.querySelector('.qty-increase');
+        const input = container.querySelector('.qty-input');
+        
+        if (!decreaseBtn || !increaseBtn || !input) return;
+        
+        decreaseBtn.addEventListener('click', function() {
+            let value = parseInt(input.value) || 1;
+            const min = parseInt(input.min) || 1;
+            if (value > min) {
+                input.value = value - 1;
+            }
+        });
+        
+        increaseBtn.addEventListener('click', function() {
+            let value = parseInt(input.value) || 1;
+            const max = parseInt(input.max) || 99;
+            if (value < max) {
+                input.value = value + 1;
+            }
+        });
+    });
 }
 
 // ================================================

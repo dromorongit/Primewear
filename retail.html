@@ -346,6 +346,9 @@
             // Override type to 'retail' for all products to show retail price and quantity from 1
             const retailProducts = products.map(p => ({ ...p, type: 'retail', moq: 1 }));
             container.innerHTML = retailProducts.map(product => createProductCard(product)).join('');
+            
+            // Initialize quantity controls for the new product cards
+            initProductCardQuantityControls();
         }
     </script>
 </body>
