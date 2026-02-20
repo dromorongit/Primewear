@@ -454,11 +454,16 @@ async function handleAddProduct(e) {
     stock: parseInt(form.stock.value) || 0,
     minimum_order_quantity: form.minimum_order_quantity.value ? parseInt(form.minimum_order_quantity.value) : null,
     is_featured: form.is_featured.checked,
-    sizes: form.sizes.value ? form.sizes.value.split(',').map(s => s.trim()) : [],
+    sizes: [],
     colors: form.colors.value ? form.colors.value.split(',').map(c => c.trim()) : [],
     main_image: mainImage,
     additional_images: additionalImages
   };
+
+  // Get selected sizes
+  form.querySelectorAll('input[name="sizes"]:checked').forEach(cb => {
+    formData.sizes.push(cb.value);
+  });
 
   // Get selected categories
   const categories = [];
@@ -572,6 +577,11 @@ function openEditModal(productId) {
     cb.checked = product.categories.includes(cb.value);
   });
 
+  // Set sizes
+  document.querySelectorAll('#edit-sizes input[name="sizes"]').forEach(cb => {
+    cb.checked = product.sizes && product.sizes.includes(cb.value);
+  });
+
   document.getElementById('edit-modal').classList.add('active');
 }
 
@@ -672,9 +682,15 @@ async function handleEditProduct(e) {
     stock: parseInt(form.stock.value),
     minimum_order_quantity: form.minimum_order_quantity.value ? parseInt(form.minimum_order_quantity.value) : null,
     is_featured: form.is_featured.checked,
+    sizes: [],
     main_image: mainImage,
     additional_images: additionalImages
   };
+
+  // Get selected sizes
+  form.querySelectorAll('#edit-sizes input[name="sizes"]:checked').forEach(cb => {
+    formData.sizes.push(cb.value);
+  });
 
   // Get selected categories
   const categories = [];

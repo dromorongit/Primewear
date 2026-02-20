@@ -127,6 +127,39 @@
             cursor: pointer;
         }
         
+        .size-options-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .size-option-checkbox {
+            display: none;
+        }
+        
+        .size-option-label {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .size-option-checkbox:checked + .size-option-label {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .size-option-label:hover {
+            border-color: var(--primary-color);
+            background: rgba(198, 167, 94, 0.1);
+        }
+        
         .product-detail-quantity {
             display: flex;
             align-items: center;
@@ -318,8 +351,11 @@
                     
                     <div class="product-detail-options">
                         <div class="product-detail-option" id="size-option" style="display: none;">
-                            <label>Size:</label>
-                            <select id="size-select"></select>
+                            <label>Select Sizes:</label>
+                            <div class="size-options-grid" id="size-options">
+                                <!-- Size checkboxes will be rendered here -->
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Select multiple sizes to add different variants to cart</p>
                         </div>
                         
                         <div class="product-detail-option" id="color-option" style="display: none;">
@@ -493,11 +529,12 @@
             
             // Size option
             const sizeOption = document.getElementById('size-option');
-            const sizeSelect = document.getElementById('size-select');
+            const sizeOptionsContainer = document.getElementById('size-options');
             if (currentProduct.sizes && currentProduct.sizes.length > 0 && currentProduct.sizes[0] !== 'One Size') {
                 sizeOption.style.display = 'block';
-                sizeSelect.innerHTML = currentProduct.sizes.map(size => 
-                    `<option value="${size}">${size}</option>`
+                sizeOptionsContainer.innerHTML = currentProduct.sizes.map(size => 
+                    `<input type="checkbox" id="size-${size}" class="size-option-checkbox" name="selected-sizes" value="${size}">
+                     <label for="size-${size}" class="size-option-label">${size}</label>`
                 ).join('');
             }
             
@@ -553,13 +590,28 @@
             
             const qtyInput = document.getElementById('detail-qty');
             const quantity = parseInt(qtyInput.value) || (currentProduct.moq || 1);
-            const sizeSelect = document.getElementById('size-select');
-            const colorSelect = document.getElementById('color-select');
             
-            const size = sizeSelect ? sizeSelect.value : null;
-            const color = colorSelect ? colorSelect.value : null;
+            // Check if product has sizes
+            const hasSizes = currentProduct.sizes && currentProduct.sizes.length > 0 && currentProduct.sizes[0] !== 'One Size';
             
-            Cart.addItem(currentProduct, quantity, size, color);
+            if (hasSizes) {
+                // Get all selected sizes
+                const selectedSizeCheckboxes = document.querySelectorAll('input[name="selected-sizes"]:checked');
+                const selectedSizes = Array.from(selectedSizeCheckboxes).map(cb => cb.value);
+                
+                if (selectedSizes.length === 0) {
+                    Cart.showNotification('Please select at least one size', 'error');
+                    return;
+                }
+                
+                // Add each selected size to cart
+                selectedSizes.forEach(size => {
+                    Cart.addItem(currentProduct, quantity, size, null);
+                });
+            } else {
+                // No sizes, add to cart without size
+                Cart.addItem(currentProduct, quantity, null, null);
+            }
         }
     </script>
 </body>
