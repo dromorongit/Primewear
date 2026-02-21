@@ -252,21 +252,24 @@ function createProductCard(product, showQuickAdd = true) {
     const isWholesale = product.type === 'wholesale';
     const moq = product.moq || 1;
     
+    // Ensure product ID is passed as string to avoid JavaScript number precision issues
+    const productId = String(product.id);
+    
     return `
-        <div class="product-card" data-product-id="${product.id}">
+        <div class="product-card" data-product-id="${productId}">
             ${product.type === 'wholesale' ? '<span class="product-badge wholesale">Wholesale</span>' : '<span class="product-badge">Retail</span>'}
             <div class="product-image">
                 <img src="${product.images[0]}" alt="${product.name}" loading="lazy" onerror="this.src='assets/images/placeholder.jpg'">
                 <div class="product-overlay">
-                    <a href="product.html?id=${product.id}" class="view-details-btn">
+                    <a href="product.html?id=${productId}" class="view-details-btn">
                         <i class="fas fa-eye"></i> View Details
                     </a>
                 </div>
                 ${showQuickAdd ? `
                 <div class="product-actions">
                     <button class="product-action-btn" title="Add to Wishlist">&hearts;</button>
-                    <button class="product-action-btn" title="Quick View" onclick="quickView(${product.id})">&#128065;</button>
-                    <button class="product-action-btn" title="Add to Cart" onclick="quickAddToCart(${product.id})">&#128722;</button>
+                    <button class="product-action-btn" title="Quick View" onclick="quickView('${productId}')">&#128065;</button>
+                    <button class="product-action-btn" title="Add to Cart" onclick="quickAddToCart('${productId}')">&#128722;</button>
                 </div>
                 ` : ''}
             </div>
@@ -276,15 +279,15 @@ function createProductCard(product, showQuickAdd = true) {
                     <span class="product-price">GH₵${price.toFixed(2)}</span>
                 </div>
                 ${!inStock ? `<div class="product-stock out">Out of Stock</div>` : ''}
-                <div class="product-quantity" data-moq="${moq}" data-product-id="${product.id}">
+                <div class="product-quantity" data-moq="${moq}" data-product-id="${productId}">
                     ${isWholesale ? `<span class="qty-label">Min Order: ${moq}</span>` : ''}
                     <div class="qty-controls">
-                        <button class="qty-btn qty-decrease" onclick="updateCardQuantity(${product.id}, -1)">-</button>
-                        <input type="number" class="qty-input" id="qty-${product.id}" value="${moq}" min="${moq}" max="${product.stock}" readonly>
-                        <button class="qty-btn qty-increase" onclick="updateCardQuantity(${product.id}, 1)">+</button>
+                        <button class="qty-btn qty-decrease" onclick="updateCardQuantity('${productId}', -1)">-</button>
+                        <input type="number" class="qty-input" id="qty-${productId}" value="${moq}" min="${moq}" max="${product.stock}" readonly>
+                        <button class="qty-btn qty-increase" onclick="updateCardQuantity('${productId}', 1)">+</button>
                     </div>
                 </div>
-                <button class="add-to-cart-btn" onclick="addToCartFromCard(${product.id})">
+                <button class="add-to-cart-btn" onclick="addToCartFromCard('${productId}')">
                     ${product.type === 'wholesale' ? 'Add to Cart (Wholesale)' : 'Add to Cart'}
                 </button>
             </div>
@@ -296,35 +299,47 @@ function createProductCard(product, showQuickAdd = true) {
 // Quick Add to Cart
 // ================================================
 function quickAddToCart(productId) {
-    const product = getProductById(productId);
+    // Convert to string to handle both string and number IDs
+    const id = String(productId);
+    const product = getProductById(id);
     if (product) {
         Cart.addItem(product, 1);
+    } else {
+        console.error('Product not found:', id);
+        Cart.showNotification('Product not found', 'error');
     }
 }
 
 function addToCartFromCard(productId) {
-    const product = getProductById(productId);
+    // Convert to string to handle both string and number IDs
+    const id = String(productId);
+    const product = getProductById(id);
     if (product) {
         let quantity = 1;
-        const qtyInput = document.getElementById(`qty-${productId}`);
+        const qtyInput = document.getElementById(`qty-${id}`);
         if (qtyInput) {
             quantity = parseInt(qtyInput.value) || (product.moq || 1);
         }
         Cart.addItem(product, quantity);
+    } else {
+        console.error('Product not found:', id);
+        Cart.showNotification('Product not found', 'error');
     }
 }
 
 // Update quantity from product card
 function updateCardQuantity(productId, change) {
-    const product = getProductById(productId);
+    // Convert to string to handle both string and number IDs
+    const id = String(productId);
+    const product = getProductById(id);
     if (!product) {
-        console.error('Product not found:', productId);
+        console.error('Product not found:', id);
         return;
     }
     
-    const qtyInput = document.getElementById('qty-' + productId);
+    const qtyInput = document.getElementById('qty-' + id);
     if (!qtyInput) {
-        console.error('Input not found for product:', productId);
+        console.error('Input not found for product:', id);
         return;
     }
     
@@ -372,8 +387,14 @@ function initProductCardQuantityControls() {
 // Quick View Modal
 // ================================================
 function quickView(productId) {
-    const product = getProductById(productId);
-    if (!product) return;
+    // Convert to string to handle both string and number IDs
+    const id = String(productId);
+    const product = getProductById(id);
+    if (!product) {
+        console.error('Product not found:', id);
+        Cart.showNotification('Product not found', 'error');
+        return;
+    }
     
     const modal = document.createElement('div');
     modal.className = 'quick-view-modal';
@@ -413,7 +434,7 @@ function quickView(productId) {
                         <input type="number" class="quantity-input" value="1" min="1" max="${product.stock}">
                         <button class="quantity-btn" onclick="this.parentElement.querySelector('.quantity-input').value = Math.min(${product.stock}, parseInt(this.parentElement.querySelector('.quantity-input').value) + 1)">+</button>
                     </div>
-                    <button class="btn btn-primary" onclick="addToCartWithOptions(${product.id})">Add to Cart</button>
+                    <button class="btn btn-primary" onclick="addToCartWithOptions('${id}')">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -477,8 +498,13 @@ function quickView(productId) {
 }
 
 function addToCartWithOptions(productId) {
-    const product = getProductById(productId);
-    if (!product) return;
+    // Convert to string to handle both string and number IDs
+    const id = String(productId);
+    const product = getProductById(id);
+    if (!product) {
+        Cart.showNotification('Product not found', 'error');
+        return;
+    }
     
     const sizeSelect = document.getElementById('quick-view-size');
     const colorSelect = document.getElementById('quick-view-color');

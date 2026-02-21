@@ -458,11 +458,11 @@
         // Product Detail Page Logic
         let currentProduct = null;
         
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProductDetail();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadProductDetail();
         });
         
-        function loadProductDetail() {
+        async function loadProductDetail() {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
             
@@ -471,8 +471,28 @@
                 return;
             }
             
+            // Show loading state
+            document.getElementById('main-image').src = 'assets/images/primewearicon.PNG';
+            document.getElementById('product-name').textContent = 'Loading product...';
+            
+            // Fetch products first to ensure we have the data
+            await fetchProducts();
+            
             // Try to find product by id or _id (string IDs from database)
             currentProduct = getProductById(productId) || getProductById(parseInt(productId));
+            
+            if (!currentProduct) {
+                // Try fetching from API directly as fallback
+                try {
+                    const response = await fetch('https://primewear-production.up.railway.app/api/products/' + productId);
+                    if (response.ok) {
+                        const data = await response.json();
+                        currentProduct = transformProduct(data);
+                    }
+                } catch (e) {
+                    console.error('Error fetching product:', e);
+                }
+            }
             
             if (!currentProduct) {
                 window.location.href = 'shop.html';

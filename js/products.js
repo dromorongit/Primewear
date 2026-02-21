@@ -170,6 +170,18 @@ if (typeof window !== 'undefined') {
     fetchProducts();
 }
 
+// Make functions available globally for HTML pages
+if (typeof window !== 'undefined') {
+    window.transformProduct = transformProduct;
+    window.getProductById = getProductById;
+    window.fetchProducts = fetchProducts;
+    window.getAllProducts = getAllProducts;
+    window.getProductsByType = getProductsByType;
+    window.getProductsByCategory = getProductsByCategory;
+    window.searchProducts = searchProducts;
+    window.sortProducts = sortProducts;
+}
+
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -178,6 +190,7 @@ if (typeof module !== 'undefined' && module.exports) {
         fetchWholesaleProducts,
         fetchRetailProducts,
         fetchFeaturedProducts,
+        transformProduct,
         getProductsByType,
         getProductsByCategory,
         getProductById,
