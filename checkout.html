@@ -244,18 +244,7 @@
                             
                             <div class="payment-methods">
                                 <label class="payment-method-option">
-                                    <input type="radio" name="payment_method" value="whatsapp" checked>
-                                    <div class="payment-method-content">
-                                        <i class="fab fa-whatsapp"></i>
-                                        <div>
-                                            <strong>Order via WhatsApp</strong>
-                                            <span>We'll confirm your order and payment details via WhatsApp</span>
-                                        </div>
-                                    </div>
-                                </label>
-                                
-                                <label class="payment-method-option">
-                                    <input type="radio" name="payment_method" value="mtn">
+                                    <input type="radio" name="payment_method" value="mtn" checked>
                                     <div class="payment-method-content">
                                         <i class="fas fa-mobile-alt"></i>
                                         <div>
@@ -270,7 +259,7 @@
                                     <div class="payment-method-content">
                                         <i class="fas fa-credit-card"></i>
                                         <div>
-                                            <strong>Paystack Card Payment</strong>
+                                            <strong>Pay with Paystack</strong>
                                             <span>Pay securely with debit/credit card</span>
                                         </div>
                                     </div>
@@ -355,7 +344,20 @@
             </div>
         </div>
     </section>
-
+    
+    <!-- Submit Order to WhatsApp Section -->
+    <section style="padding: 40px 0; background: var(--primary-color);">
+        <div class="container">
+            <div style="text-align: center; color: white;">
+                <h2 style="margin-bottom: 10px;"><i class="fab fa-whatsapp"></i> Ready to Submit Your Order?</h2>
+                <p style="margin-bottom: 25px; opacity: 0.9;">Click the button below to submit your complete order via WhatsApp</p>
+                <button class="btn" onclick="Checkout.submitToWhatsApp()" style="background: white; color: var(--primary-color); padding: 18px 50px; font-size: 1.1rem; font-weight: 600; border: none; cursor: pointer; border-radius: 10px;">
+                    <i class="fab fa-whatsapp"></i> Submit Order to WhatsApp
+                </button>
+            </div>
+        </div>
+    </section>
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
