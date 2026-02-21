@@ -1,15 +1,16 @@
 /* ================================================
    Prime Wear Wholesale - Main Stylesheet
-   Brand Colors: Gold (#C6A75E), Light Brown (#A67C52)
+   Brand Colors: Light Gold (#DBC882), Soft Brown (#C4A77D)
    Mobile-First Responsive Design
    ================================================ */
 
 /* CSS Variables */
 :root {
-    --primary-color: #C6A75E;
-    --primary-dark: #B8953E;
-    --secondary-color: #A67C52;
-    --secondary-dark: #8B6A42;
+    /* Brand Colors - Lighter Gold and Brown */
+    --primary-color: #DBC882;
+    --primary-dark: #C9A858;
+    --secondary-color: #C4A77D;
+    --secondary-dark: #A8896A;
     --background-color: #FFFFFF;
     --text-dark: #1A1A1A;
     --text-light: #666666;
@@ -17,7 +18,7 @@
     --border-color: #E5E5E5;
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
     --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --shadow-luxury: 0 15px 50px rgba(198, 167, 94, 0.15);
+    --shadow-luxury: 0 15px 50px rgba(219, 200, 130, 0.15);
     --transition-fast: 0.2s ease;
     --transition-medium: 0.3s ease;
     --transition-slow: 0.5s ease;
@@ -131,13 +132,13 @@ p {
 .btn-primary {
     background: var(--primary-color);
     color: white;
-    box-shadow: 0 4px 15px rgba(198, 167, 94, 0.3);
+    box-shadow: 0 4px 15px rgba(219, 200, 130, 0.3);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(198, 167, 94, 0.4);
+    box-shadow: 0 6px 20px rgba(219, 200, 130, 0.4);
 }
 
 .btn-secondary {
@@ -488,7 +489,7 @@ p {
     right: -20%;
     width: 70%;
     height: 150%;
-    background: radial-gradient(ellipse, rgba(198, 167, 94, 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(219, 200, 130, 0.08) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -505,7 +506,7 @@ p {
 
 .hero-badge {
     display: inline-block;
-    background: rgba(198, 167, 94, 0.15);
+    background: rgba(219, 200, 130, 0.15);
     color: var(--primary-color);
     padding: 8px 20px;
     border-radius: 50px;
@@ -973,7 +974,7 @@ p {
     width: 70px;
     height: 70px;
     margin: 0 auto 20px;
-    background: rgba(198, 167, 94, 0.15);
+    background: rgba(219, 200, 130, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1417,7 +1418,7 @@ p {
 .form-group textarea:focus,
 .form-group select:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(198, 167, 94, 0.1);
+    box-shadow: 0 0 0 3px rgba(219, 200, 130, 0.1);
 }
 
 .form-group textarea {
@@ -1527,7 +1528,7 @@ p {
 .contact-info-card h4 span {
     width: 40px;
     height: 40px;
-    background: rgba(198, 167, 94, 0.15);
+    background: rgba(219, 200, 130, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1620,7 +1621,7 @@ p {
     width: 80px;
     height: 80px;
     margin: 0 auto 25px;
-    background: rgba(198, 167, 94, 0.15);
+    background: rgba(219, 200, 130, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1933,7 +1934,7 @@ p {
     
     .nav-links a:hover,
     .nav-links a.active {
-        background: rgba(198, 167, 94, 0.1);
+        background: rgba(219, 200, 130, 0.1);
     }
     
     /* Cart icon in mobile nav */
