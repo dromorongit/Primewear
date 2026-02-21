@@ -126,7 +126,15 @@ function getProductsByCategory(category) {
 }
 
 function getProductById(id) {
-    return productsData.find(product => product.id === id || product._id === id);
+    // Handle both string and number IDs
+    if (!id) return null;
+    const idStr = String(id);
+    return productsData.find(product => 
+        product.id === idStr || 
+        product._id === idStr ||
+        product.id === id ||
+        product._id === id
+    );
 }
 
 function getAllProducts() {

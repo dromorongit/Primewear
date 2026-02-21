@@ -464,14 +464,15 @@
         
         function loadProductDetail() {
             const urlParams = new URLSearchParams(window.location.search);
-            const productId = parseInt(urlParams.get('id'));
+            const productId = urlParams.get('id');
             
             if (!productId) {
                 window.location.href = 'shop.html';
                 return;
             }
             
-            currentProduct = getProductById(productId);
+            // Try to find product by id or _id (string IDs from database)
+            currentProduct = getProductById(productId) || getProductById(parseInt(productId));
             
             if (!currentProduct) {
                 window.location.href = 'shop.html';
