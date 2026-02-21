@@ -273,6 +273,22 @@ const Cart = {
             message += `*Address:* ${customerInfo.address}%0A`;
         }
         
+        // Payment method
+        const paymentMethod = customerInfo.payment_method || 'whatsapp';
+        let paymentMethodText = 'WhatsApp';
+        if (paymentMethod === 'mtn') {
+            paymentMethodText = 'MTN Mobile Money';
+            message += `*Payment Method:* MTN Mobile Money%0A`;
+            if (customerInfo.mtn_transaction_id) {
+                message += `*MTN Transaction ID:* ${customerInfo.mtn_transaction_id}%0A`;
+            }
+        } else if (paymentMethod === 'paystack') {
+            paymentMethodText = 'Paystack';
+            message += `*Payment Method:* Paystack Card Payment%0A`;
+        } else {
+            message += `*Payment Method:* WhatsApp Order%0A`;
+        }
+        
         message += `%0A*ORDER DETAILS*%0A`;
         message += `━━━━━━━━━━━━━━━━━━━━%0A`;
         

@@ -11,6 +11,100 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .payment-method-option {
+            display: block;
+            cursor: pointer;
+        }
+        
+        .payment-method-option input {
+            display: none;
+        }
+        
+        .payment-method-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            background: var(--background-light);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            transition: var(--transition-fast);
+        }
+        
+        .payment-method-option input:checked + .payment-method-content {
+            border-color: var(--primary-color);
+            background: rgba(198, 167, 94, 0.1);
+        }
+        
+        .payment-method-content i {
+            font-size: 28px;
+            color: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            background: rgba(198, 167, 94, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .payment-method-content strong {
+            display: block;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        
+        .payment-method-content span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .payment-details {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--background-light);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .mtn-instructions h4, .paystack-info h4 {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .mtn-instructions ol {
+            padding-left: 20px;
+            line-height: 2;
+            color: var(--text-light);
+        }
+        
+        .mtn-merchant-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(198, 167, 94, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .mtn-merchant-info p {
+            margin: 5px 0;
+            color: var(--text-dark);
+        }
+        
+        .paystack-info p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
     <!-- Page Loader -->
@@ -144,6 +238,77 @@
                                 <textarea id="notes" name="notes" placeholder="Any special instructions for your order..."></textarea>
                             </div>
                         </div>
+                        
+                        <div class="checkout-form" style="margin-top: 30px;">
+                            <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
+                            
+                            <div class="payment-methods">
+                                <label class="payment-method-option">
+                                    <input type="radio" name="payment_method" value="whatsapp" checked>
+                                    <div class="payment-method-content">
+                                        <i class="fab fa-whatsapp"></i>
+                                        <div>
+                                            <strong>Order via WhatsApp</strong>
+                                            <span>We'll confirm your order and payment details via WhatsApp</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="payment-method-option">
+                                    <input type="radio" name="payment_method" value="mtn">
+                                    <div class="payment-method-content">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <div>
+                                            <strong>MTN Mobile Money</strong>
+                                            <span>Pay directly via MTN Mobile Money</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="payment-method-option">
+                                    <input type="radio" name="payment_method" value="paystack">
+                                    <div class="payment-method-content">
+                                        <i class="fas fa-credit-card"></i>
+                                        <div>
+                                            <strong>Paystack Card Payment</strong>
+                                            <span>Pay securely with debit/credit card</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <!-- MTN Payment Details -->
+                            <div id="mtn-payment-details" class="payment-details" style="display: none;">
+                                <div class="mtn-instructions">
+                                    <h4><i class="fas fa-info-circle"></i> How to Pay with MTN Mobile Money</h4>
+                                    <ol>
+                                        <li>Open your MTN Mobile Money app or dial <strong>*170#</strong></li>
+                                        <li>Select <strong>Make Payment</strong></li>
+                                        <li>Select <strong>Merchant Payment</strong></li>
+                                        <li>Enter the merchant number: <strong>0546269073</strong></li>
+                                        <li>Enter amount: <strong id="mtn-amount">GH₵0.00</strong></li>
+                                        <li>Enter your PIN to confirm</li>
+                                        <li>Enter your reference: <strong id="mtn-reference"></strong></li>
+                                    </ol>
+                                    <div class="mtn-merchant-info">
+                                        <p><strong>Merchant Name:</strong> PEACE ABRAHAM VENTURES</p>
+                                        <p><strong>Merchant Number:</strong> 0546269073</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 20px;">
+                                    <label for="mtn-transaction-id">MTN Transaction ID *</label>
+                                    <input type="text" id="mtn-transaction-id" name="mtn_transaction_id" placeholder="Enter the transaction ID from your confirmation">
+                                </div>
+                            </div>
+                            
+                            <!-- Paystack Payment -->
+                            <div id="paystack-payment-details" class="payment-details" style="display: none;">
+                                <div class="paystack-info">
+                                    <h4><i class="fas fa-lock"></i> Secure Payment with Paystack</h4>
+                                    <p>You will be redirected to Paystack's secure payment page to complete your payment.</p>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 
@@ -166,8 +331,8 @@
                         </div>
                     </div>
                     
-                    <button class="btn btn-primary checkout-btn" onclick="Checkout.processCheckout()" style="margin-top: 25px;">
-                        <i class="fab fa-whatsapp"></i> Complete Order via WhatsApp
+                    <button class="btn btn-primary checkout-btn" onclick="Checkout.processCheckout()" style="margin-top: 25px;" id="checkout-submit-btn">
+                        <i class="fab fa-whatsapp"></i> <span id="checkout-btn-text">Complete Order via WhatsApp</span>
                     </button>
                     
                     <div style="margin-top: 25px; padding: 20px; background: #F8F6EF; border-radius: 10px;">

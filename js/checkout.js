@@ -6,6 +6,10 @@ const Checkout = {
     // WhatsApp number for orders
     whatsappNumber: 'https://wa.me/message/A6Y7H3ZVDOFJO1',
     
+    // MTN Mobile Money details
+    mtnNumber: '0546269073',
+    mtnName: 'PEACE ABRAHAM VENTURES',
+    
     // Form validation rules
     validators: {
         name: {
@@ -23,6 +27,16 @@ const Checkout = {
         address: {
             validate: (value) => value.trim().length >= 10,
             message: 'Please enter your complete delivery address'
+        },
+        mtn_transaction_id: {
+            validate: (value) => {
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+                if (paymentMethod && paymentMethod.value === 'mtn') {
+                    return value.trim().length >= 5;
+                }
+                return true;
+            },
+            message: 'Please enter your MTN transaction ID'
         }
     },
     
@@ -31,12 +45,75 @@ const Checkout = {
         if (this.isCheckoutPage()) {
             this.initForm();
             this.initOrderSummary();
+            this.initPaymentMethod();
         }
     },
     
     // Check if current page is checkout
     isCheckoutPage() {
         return window.location.pathname.includes('checkout.html');
+    },
+    
+    // Initialize payment method handling
+    initPaymentMethod() {
+        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', () => {
+                this.updatePaymentUI();
+            });
+        });
+        
+        // Update total amount display for MTN
+        this.updatePaymentUI();
+    },
+    
+    // Update UI based on selected payment method
+    updatePaymentUI() {
+        const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
+        const method = selectedMethod ? selectedMethod.value : 'whatsapp';
+        
+        const mtnDetails = document.getElementById('mtn-payment-details');
+        const paystackDetails = document.getElementById('paystack-payment-details');
+        const checkoutBtnText = document.getElementById('checkout-btn-text');
+        const checkoutBtn = document.getElementById('checkout-submit-btn');
+        
+        // Hide all payment details
+        if (mtnDetails) mtnDetails.style.display = 'none';
+        if (paystackDetails) paystackDetails.style.display = 'none';
+        
+        // Update button and show relevant details
+        if (method === 'mtn') {
+            if (mtnDetails) mtnDetails.style.display = 'block';
+            if (checkoutBtnText) checkoutBtnText.textContent = 'Complete Order with MTN';
+            checkoutBtn.innerHTML = '<i class="fas fa-mobile-alt"></i> <span id="checkout-btn-text">Complete Order with MTN</span>';
+            
+            // Update MTN amount
+            const total = Cart.getTotal();
+            const mtnAmount = document.getElementById('mtn-amount');
+            if (mtnAmount) mtnAmount.textContent = `GH₵${total.toFixed(2)}`;
+            
+            // Generate reference
+            const ref = this.generateOrderReference();
+            const mtnRef = document.getElementById('mtn-reference');
+            if (mtnRef) mtnRef.textContent = ref;
+            
+        } else if (method === 'paystack') {
+            if (paystackDetails) paystackDetails.style.display = 'block';
+            if (checkoutBtnText) checkoutBtnText.textContent = 'Pay with Paystack';
+            checkoutBtn.innerHTML = '<i class="fas fa-lock"></i> <span id="checkout-btn-text">Pay with Paystack</span>';
+            
+        } else {
+            // WhatsApp (default)
+            if (checkoutBtnText) checkoutBtnText.textContent = 'Complete Order via WhatsApp';
+            checkoutBtn.innerHTML = '<i class="fab fa-whatsapp"></i> <span id="checkout-btn-text">Complete Order via WhatsApp</span>';
+        }
+    },
+    
+    // Generate order reference
+    generateOrderReference() {
+        const timestamp = Date.now().toString().slice(-8);
+        const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        return `PW${timestamp}${random}`;
     },
     
     // Initialize form handling
@@ -180,30 +257,86 @@ const Checkout = {
     // Process checkout
     processCheckout() {
         const form = document.getElementById('checkout-form');
+        const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
+        const paymentMethod = selectedMethod ? selectedMethod.value : 'whatsapp';
+        
         const customerInfo = {
             name: form.querySelector('[name="name"]').value,
             phone: form.querySelector('[name="phone"]').value,
             email: form.querySelector('[name="email"]').value,
             address: form.querySelector('[name="address"]').value,
-            notes: form.querySelector('[name="notes"]').value
+            notes: form.querySelector('[name="notes"]').value,
+            payment_method: paymentMethod
         };
         
-        // Generate WhatsApp message
+        // Handle based on payment method
+        if (paymentMethod === 'mtn') {
+            customerInfo.mtn_transaction_id = form.querySelector('[name="mtn_transaction_id"]').value;
+            this.processMTNPayment(customerInfo);
+        } else if (paymentMethod === 'paystack') {
+            this.processPaystackPayment(customerInfo);
+        } else {
+            // WhatsApp - existing behavior
+            this.processWhatsAppOrder(customerInfo);
+        }
+    },
+    
+    // Process WhatsApp order
+    processWhatsAppOrder(customerInfo) {
         const message = Cart.generateWhatsappMessage(customerInfo);
         const whatsappUrl = `${this.whatsappNumber}&text=${message}`;
         
-        // Open WhatsApp
         window.open(whatsappUrl, '_blank');
         
-        // Clear cart after successful order
         Cart.clear();
-        
-        // Show success message
         this.showNotification('Order sent successfully! Check WhatsApp to complete your order.');
         
-        // Redirect to home after a delay
         setTimeout(() => {
             window.location.href = 'index.html';
+        }, 3000);
+    },
+    
+    // Process MTN Mobile Money payment
+    processMTNPayment(customerInfo) {
+        const message = Cart.generateWhatsappMessage(customerInfo);
+        const whatsappUrl = `${this.whatsappNumber}&text=${message}`;
+        
+        window.open(whatsappUrl, '_blank');
+        
+        Cart.clear();
+        this.showNotification('Payment submitted! We will verify your MTN transaction and confirm your order via WhatsApp.');
+        
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 5000);
+    },
+    
+    // Process Paystack payment
+    processPaystackPayment(customerInfo) {
+        const total = Cart.getTotal();
+        const reference = this.generateOrderReference();
+        
+        // Store order info for after payment
+        localStorage.setItem('pendingOrder', JSON.stringify({
+            customerInfo: customerInfo,
+            items: Cart.items,
+            total: total,
+            reference: reference
+        }));
+        
+        // Show message that Paystack integration is coming soon
+        this.showNotification('Paystack payment option is coming soon! For now, please use WhatsApp or MTN Mobile Money.', 'error');
+        
+        // Alternative: Open WhatsApp with payment info
+        const message = Cart.generateWhatsappMessage(customerInfo);
+        const whatsappUrl = `${this.whatsappNumber}&text=${message}`;
+        
+        setTimeout(() => {
+            if (confirm('Would you like to complete your order via WhatsApp instead?')) {
+                window.open(whatsappUrl, '_blank');
+                Cart.clear();
+                window.location.href = 'index.html';
+            }
         }, 3000);
     },
     
