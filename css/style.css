@@ -6,25 +6,22 @@
 
 /* CSS Variables */
 :root {
-    /* Brand Colors - White, Black, Light Blue Theme */
-    --primary-color: #5DADE2;  /* Light Blue */
-    --primary-dark: #3498DB;
-    --secondary-color: #2C3E50;  /* Dark Blue-Gray */
-    --secondary-dark: #1A252F;
+    /* Brand Colors - Beige, Black Theme */
+    --primary-color: #E9D7AB;  /* Warm Beige */
+    --primary-dark: #D4C090;
+    --secondary-color: #000000;  /* Black */
+    --secondary-dark: #1A1A1A;
     
     /* Background Colors */
     --background-primary: #FFFFFF;
     --background-secondary: #F8F9FA;
-    --background-light: #ECF0F1;
+    --background-light: #F5F5DC;
     
     /* Text Colors */
-    --text-dark: #2C3E50;
-    --text-light: #7F8C8D;
-    --text-muted: #95A5A6;
-    --background-color: #FFFFFF;
     --text-dark: #1A1A1A;
     --text-light: #666666;
     --text-muted: #999999;
+    --background-color: #FFFFFF;
     --border-color: #E5E5E5;
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
     --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
