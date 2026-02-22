@@ -1176,6 +1176,27 @@ p {
     font-size: 0.9rem;
 }
 
+.developer-credit {
+    margin-top: 12px;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.developer-credit a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.developer-credit a:hover {
+    color: #F5F5DC;
+    text-decoration: underline;
+}
+
 /* ================================================
    Floating WhatsApp Button
    ================================================ */
