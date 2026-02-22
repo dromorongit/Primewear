@@ -728,7 +728,8 @@ p {
 }
 
 .product-badge.wholesale {
-    background: var(--secondary-color);
+    background: #E9D7AB;
+    color: #000000;
 }
 
 .product-image {
@@ -873,8 +874,8 @@ p {
 .add-to-cart-btn {
     width: 100%;
     padding: 12px;
-    background: var(--primary-color);
-    color: white;
+    background: #000000;
+    color: #F5F5DC;
     border-radius: 8px;
     font-weight: 500;
     transition: var(--transition-fast);
@@ -882,7 +883,7 @@ p {
 }
 
 .add-to-cart-btn:hover {
-    background: var(--primary-dark);
+    background: #333333;
 }
 
 /* Product Card Quantity Controls */
