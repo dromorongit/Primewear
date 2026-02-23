@@ -725,7 +725,7 @@ p {
 }
 
 .product-badge.wholesale {
-    background: #E9D7AB;
+    background: #FAF8EF;
     color: #000000;
 }
 
@@ -851,7 +851,7 @@ p {
 .product-price {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: #000000;
 }
 
 .product-wholesale-price {
