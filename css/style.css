@@ -159,13 +159,13 @@ p {
 
 .btn-secondary {
     background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
+    color: var(--gold-main);
+    border: 2px solid var(--gold-main);
 }
 
 .btn-secondary:hover {
-    background: var(--primary-color);
-    color: white;
+    background: var(--gold-gradient);
+    color: var(--primary-color);
 }
 
 .btn-outline {
