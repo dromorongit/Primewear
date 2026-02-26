@@ -781,8 +781,8 @@ p {
 }
 
 .product-badge.wholesale {
-    background: #FAF8EF;
-    color: #000000;
+    background: rgba(212, 175, 55, 0.2);
+    color: #A67C2E;
 }
 
 .product-image {
