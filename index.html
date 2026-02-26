@@ -125,15 +125,15 @@
                     </div>
                     <div class="hero-stats">
                         <div class="stat-item">
-                            <div class="stat-number">500+</div>
+                            <div class="stat-number" data-target="500">0</div>
                             <div class="stat-label">Products</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number">1000+</div>
+                            <div class="stat-number" data-target="1000">0</div>
                             <div class="stat-label">Happy Customers</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number">5+</div>
+                            <div class="stat-number" data-target="5">0</div>
                             <div class="stat-label">Years Experience</div>
                         </div>
                     </div>
@@ -469,6 +469,40 @@
                     carouselImages[currentIndex].classList.add('active');
                 }, 3000);
             }
+            
+            // Counter Animation
+            const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+            
+            const animateCounter = (element) => {
+                const target = parseInt(element.getAttribute('data-target'));
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
+                
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        element.textContent = Math.floor(current) + '+';
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        element.textContent = target + '+';
+                    }
+                };
+                
+                updateCounter();
+            };
+            
+            // Start counter animation when element is in view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statNumbers.forEach(stat => observer.observe(stat));
         });
     </script>
 </body>
