@@ -85,6 +85,26 @@
             color: var(--primary-color);
         }
         
+        .product-detail-price-original {
+            font-size: 1.2rem;
+            text-decoration: line-through;
+            color: var(--text-muted);
+            margin-right: 10px;
+        }
+        
+        .product-detail-price-sale {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #E74C3C;
+        }
+        
+        .product-detail-short-desc {
+            margin: 15px 0;
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
         .product-detail-stock {
             font-size: 0.9rem;
         }
@@ -428,9 +448,11 @@
                 <div class="product-detail-info">
                     <span class="product-detail-category" id="category"></span>
                     <h1 id="product-name"></h1>
+                    <p class="product-detail-short-desc" id="short-description"></p>
                     
                     <div class="product-detail-pricing">
                         <span class="product-detail-price" id="price"></span>
+                        <span class="product-detail-price-original" id="original-price" style="display: none;"></span>
                         <span class="product-detail-stock" id="stock"></span>
                     </div>
                     
@@ -620,8 +642,31 @@
             // Product name
             document.getElementById('product-name').textContent = currentProduct.name;
             
-            // Price
-            document.getElementById('price').textContent = `GH₵${price.toFixed(2)}`;
+            // Short description
+            const shortDescEl = document.getElementById('short-description');
+            if (currentProduct.short_description) {
+                shortDescEl.textContent = currentProduct.short_description;
+                shortDescEl.style.display = 'block';
+            } else {
+                shortDescEl.style.display = 'none';
+            }
+            
+            // Price - check for sales price
+            const priceEl = document.getElementById('price');
+            const originalPriceEl = document.getElementById('original-price');
+            
+            if (currentProduct.sales_price && currentProduct.sales_price > 0) {
+                // Show sale price with original price crossed out
+                const originalPrice = currentProduct.retail_price || currentProduct.wholesale_price || price;
+                priceEl.textContent = `GH₵${currentProduct.sales_price.toFixed(2)}`;
+                priceEl.className = 'product-detail-price-sale';
+                originalPriceEl.textContent = `GH₵${originalPrice.toFixed(2)}`;
+                originalPriceEl.style.display = 'inline';
+            } else {
+                priceEl.textContent = `GH₵${price.toFixed(2)}`;
+                priceEl.className = 'product-detail-price';
+                originalPriceEl.style.display = 'none';
+            }
             
             // Stock status
             const stockEl = document.getElementById('stock');
@@ -751,6 +796,10 @@
             const qtyInput = document.getElementById('detail-qty');
             const quantity = parseInt(qtyInput.value) || (currentProduct.moq || 1);
             
+            // Get selected color
+            const colorSelect = document.getElementById('color-select');
+            const selectedColor = colorSelect && colorSelect.value ? colorSelect.value : null;
+            
             // Check if product has sizes
             const hasSizes = currentProduct.sizes && currentProduct.sizes.length > 0 && currentProduct.sizes[0] !== 'One Size';
             
@@ -769,7 +818,7 @@
                 selectedSizes.forEach(size => {
                     const sizeQtyInput = document.getElementById('qty-' + size);
                     const sizeQuantity = parseInt(sizeQtyInput.value) || (currentProduct.moq || 1);
-                    Cart.addItem(currentProduct, sizeQuantity, size, null);
+                    Cart.addItem(currentProduct, sizeQuantity, size, selectedColor);
                     itemsAdded++;
                 });
                 
@@ -778,7 +827,7 @@
                 }
             } else {
                 // No sizes, add to cart without size
-                Cart.addItem(currentProduct, quantity, null, null);
+                Cart.addItem(currentProduct, quantity, null, selectedColor);
             }
         }
     </script>
