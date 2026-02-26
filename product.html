@@ -160,6 +160,93 @@
             background: rgba(198, 167, 94, 0.1);
         }
         
+        /* Size with Quantity Selector */
+        .size-quantity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .size-quantity-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            transition: var(--transition-fast);
+        }
+        
+        .size-quantity-item:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .size-quantity-item.selected {
+            border-color: var(--primary-color);
+            background: rgba(198, 167, 94, 0.08);
+        }
+        
+        .size-quantity-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .size-quantity-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+        
+        .size-quantity-label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .size-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .size-qty-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+        
+        .size-qty-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .size-qty-input {
+            width: 50px;
+            height: 32px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        
+        .no-size-selected-msg {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
         .product-detail-quantity {
             display: flex;
             align-items: center;
@@ -351,11 +438,11 @@
                     
                     <div class="product-detail-options">
                         <div class="product-detail-option" id="size-option" style="display: none;">
-                            <label>Select Sizes:</label>
-                            <div class="size-options-grid" id="size-options">
-                                <!-- Size checkboxes will be rendered here -->
+                            <label>Select Sizes & Quantities:</label>
+                            <div class="size-quantity-list" id="size-options">
+                                <!-- Size quantity controls will be rendered here -->
                             </div>
-                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Select multiple sizes to add different variants to cart</p>
+                            <p class="no-size-selected-msg">Check the sizes you want and set quantity for each</p>
                         </div>
                         
                         <div class="product-detail-option" id="color-option" style="display: none;">
@@ -425,8 +512,8 @@
                 <div class="footer-column footer-contact">
                     <h4>Contact Us</h4>
                     <p><i class="fas fa-map-marker-alt"></i> Dome, Accra, Ghana</p>
-                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
                     <p><i class="fas fa-phone"></i> <a href="tel:0544064268">0544064268</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:0209568490">0209568490</a></p>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:primewear@gmail.com">primewear@gmail.com</a></p>
                 </div>
             </div>
@@ -555,8 +642,17 @@
             if (currentProduct.sizes && currentProduct.sizes.length > 0 && currentProduct.sizes[0] !== 'One Size') {
                 sizeOption.style.display = 'block';
                 sizeOptionsContainer.innerHTML = currentProduct.sizes.map(size => 
-                    `<input type="checkbox" id="size-${size}" class="size-option-checkbox" name="selected-sizes" value="${size}">
-                     <label for="size-${size}" class="size-option-label">${size}</label>`
+                    `<div class="size-quantity-item" id="size-item-${size}">
+                        <div class="size-quantity-info">
+                            <input type="checkbox" id="size-${size}" class="size-quantity-checkbox" name="selected-sizes" value="${size}" onchange="toggleSizeItem('${size}')">
+                            <label for="size-${size}" class="size-quantity-label">${size}</label>
+                        </div>
+                        <div class="size-quantity-controls">
+                            <button class="size-qty-btn" onclick="updateSizeQuantity('${size}', -1)">-</button>
+                            <input type="number" class="size-qty-input" id="qty-${size}" value="${moq}" min="${moq}" max="${currentProduct.stock}" onchange="validateSizeQuantity('${size}')">
+                            <button class="size-qty-btn" onclick="updateSizeQuantity('${size}', 1)">+</button>
+                        </div>
+                    </div>`
                 ).join('');
             }
             
@@ -607,6 +703,48 @@
             qtyInput.value = newQty;
         }
         
+        // Toggle size item selection visual
+        function toggleSizeItem(size) {
+            const checkbox = document.getElementById('size-' + size);
+            const item = document.getElementById('size-item-' + size);
+            if (checkbox.checked) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        }
+        
+        // Update quantity for a specific size
+        function updateSizeQuantity(size, change) {
+            const qtyInput = document.getElementById('qty-' + size);
+            const moq = currentProduct.moq || 1;
+            let currentQty = parseInt(qtyInput.value) || moq;
+            let newQty = currentQty + change;
+            
+            if (newQty < moq) {
+                newQty = moq;
+            } else if (newQty > currentProduct.stock) {
+                newQty = currentProduct.stock;
+            }
+            
+            qtyInput.value = newQty;
+        }
+        
+        // Validate size quantity on manual input
+        function validateSizeQuantity(size) {
+            const qtyInput = document.getElementById('qty-' + size);
+            const moq = currentProduct.moq || 1;
+            let currentQty = parseInt(qtyInput.value) || moq;
+            
+            if (currentQty < moq) {
+                currentQty = moq;
+            } else if (currentQty > currentProduct.stock) {
+                currentQty = currentProduct.stock;
+            }
+            
+            qtyInput.value = currentQty;
+        }
+        
         function addToCartFromDetail() {
             if (!currentProduct) return;
             
@@ -617,7 +755,7 @@
             const hasSizes = currentProduct.sizes && currentProduct.sizes.length > 0 && currentProduct.sizes[0] !== 'One Size';
             
             if (hasSizes) {
-                // Get all selected sizes
+                // Get all selected sizes with their quantities
                 const selectedSizeCheckboxes = document.querySelectorAll('input[name="selected-sizes"]:checked');
                 const selectedSizes = Array.from(selectedSizeCheckboxes).map(cb => cb.value);
                 
@@ -626,10 +764,18 @@
                     return;
                 }
                 
-                // Add each selected size to cart
+                // Add each selected size to cart with its own quantity
+                let itemsAdded = 0;
                 selectedSizes.forEach(size => {
-                    Cart.addItem(currentProduct, quantity, size, null);
+                    const sizeQtyInput = document.getElementById('qty-' + size);
+                    const sizeQuantity = parseInt(sizeQtyInput.value) || (currentProduct.moq || 1);
+                    Cart.addItem(currentProduct, sizeQuantity, size, null);
+                    itemsAdded++;
                 });
+                
+                if (itemsAdded > 0) {
+                    Cart.showNotification(`${itemsAdded} size variant(s) added to cart!`);
+                }
             } else {
                 // No sizes, add to cart without size
                 Cart.addItem(currentProduct, quantity, null, null);
