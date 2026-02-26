@@ -1992,7 +1992,7 @@ p {
         width: 44px;
         height: 44px;
         font-size: 2rem;
-        color: var(--text-dark);
+        color: #0F2347;
         background: transparent;
         border: none;
         cursor: pointer;
@@ -2016,6 +2016,7 @@ p {
         padding: 15px 20px;
         font-size: 1.2rem;
         width: 100%;
+        color: #0F2347;
     }
     
     .nav-links a::after {
