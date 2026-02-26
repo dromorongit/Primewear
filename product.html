@@ -63,8 +63,8 @@
         
         .product-detail-category {
             display: inline-block;
-            background: rgba(198, 167, 94, 0.15);
-            color: var(--primary-color);
+            background: rgba(212, 175, 55, 0.15);
+            color: #A67C2E;
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.85rem;
@@ -82,7 +82,7 @@
         .product-detail-price {
             font-size: 2rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: #0F2347;
         }
         
         .product-detail-price-original {
@@ -170,14 +170,14 @@
         }
         
         .size-option-checkbox:checked + .size-option-label {
-            background: var(--primary-color);
+            background: #0F2347;
             color: white;
-            border-color: var(--primary-color);
+            border-color: #0F2347;
         }
         
         .size-option-label:hover {
-            border-color: var(--primary-color);
-            background: rgba(198, 167, 94, 0.1);
+            border-color: #0F2347;
+            background: rgba(15, 35, 71, 0.1);
         }
         
         /* Size with Quantity Selector */
@@ -199,12 +199,12 @@
         }
         
         .size-quantity-item:hover {
-            border-color: var(--primary-color);
+            border-color: #0F2347;
         }
         
         .size-quantity-item.selected {
-            border-color: var(--primary-color);
-            background: rgba(198, 167, 94, 0.08);
+            border-color: #0F2347;
+            background: rgba(15, 35, 71, 0.08);
         }
         
         .size-quantity-info {
@@ -246,9 +246,9 @@
         }
         
         .size-qty-btn:hover {
-            background: var(--primary-color);
+            background: #0F2347;
             color: white;
-            border-color: var(--primary-color);
+            border-color: #0F2347;
         }
         
         .size-qty-input {
@@ -306,9 +306,9 @@
         }
         
         .product-detail-quantity .quantity-btn:hover {
-            background: var(--primary-color);
+            background: #0F2347;
             color: white;
-            border-color: var(--primary-color);
+            border-color: #0F2347;
         }
         
         .product-detail-quantity .quantity-input {
@@ -636,8 +636,8 @@
             // Category badge
             const categoryEl = document.getElementById('category');
             categoryEl.textContent = currentProduct.category;
-            categoryEl.style.background = isWholesale ? 'rgba(166, 124, 82, 0.15)' : 'rgba(198, 167, 94, 0.15)';
-            categoryEl.style.color = isWholesale ? 'var(--secondary-color)' : 'var(--primary-color)';
+            categoryEl.style.background = isWholesale ? 'rgba(212, 175, 55, 0.15)' : 'rgba(212, 175, 55, 0.15)';
+            categoryEl.style.color = isWholesale ? '#A67C2E' : '#A67C2E';
             
             // Product name
             document.getElementById('product-name').textContent = currentProduct.name;
