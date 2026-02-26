@@ -273,6 +273,11 @@ p {
 
 .cart-icon {
     position: relative;
+    color: white;
+}
+
+.cart-icon i {
+    color: white;
 }
 
 .cart-count {
@@ -301,7 +306,7 @@ p {
 .mobile-menu-btn span {
     width: 25px;
     height: 3px;
-    background: var(--text-dark);
+    background: white;
     border-radius: 2px;
     transition: var(--transition-fast);
 }
