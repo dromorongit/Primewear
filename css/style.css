@@ -218,12 +218,12 @@ p {
 }
 
 .logo img {
-    height: 50px;
+    height: 60px;
 }
 
 .logo-text {
     font-family: var(--font-secondary);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
     background: var(--gold-gradient);
     -webkit-background-clip: text;
